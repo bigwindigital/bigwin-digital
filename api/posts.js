@@ -13,24 +13,48 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-async function readPosts() {
-  const r = await fetch(BIN_URL + '/latest', {
-    headers: { 'X-Master-Key': API_KEY }
+// Safely parse request body — handles both Vercel auto-parsed and raw stream
+async function getBody(req) {
+  if (req.body && typeof req.body === 'object') return req.body;
+  return new Promise((resolve) => {
+    let raw = '';
+    req.on('data', chunk => { raw += chunk.toString(); });
+    req.on('end', () => {
+      try { resolve(raw ? JSON.parse(raw) : {}); }
+      catch { resolve({}); }
+    });
   });
-  const json = await r.json();
-  const record = json.record;
-  // Support both { posts: [] } and plain [] formats
-  if (Array.isArray(record)) return record;
-  if (record && Array.isArray(record.posts)) return record.posts;
-  return [];
+}
+
+async function readPosts() {
+  try {
+    const r = await fetch(BIN_URL + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const json = await r.json();
+    const record = json.record;
+    if (Array.isArray(record)) return record;
+    if (record && Array.isArray(record.posts)) return record.posts;
+    return [];
+  } catch (err) {
+    console.error('readPosts error:', err);
+    return [];
+  }
 }
 
 async function writePosts(posts) {
-  await fetch(BIN_URL, {
-    method:  'PUT',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-    body:    JSON.stringify({ posts })
-  });
+  try {
+    const r = await fetch(BIN_URL, {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+      body:    JSON.stringify({ posts })
+    });
+    const json = await r.json();
+    console.log('writePosts response:', JSON.stringify(json).slice(0, 200));
+  } catch (err) {
+    console.error('writePosts error:', err);
+    throw err;
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -50,15 +74,22 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const posts   = await readPosts();
-    const newPost = {
-      id:        Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      ...req.body
-    };
-    posts.unshift(newPost);
-    await writePosts(posts);
-    return res.status(201).json(newPost);
+    try {
+      const body    = await getBody(req);
+      console.log('POST body received:', JSON.stringify(body).slice(0, 200));
+      const posts   = await readPosts();
+      const newPost = {
+        id:        Date.now().toString(),
+        createdAt: new Date().toISOString(),
+        ...body
+      };
+      posts.unshift(newPost);
+      await writePosts(posts);
+      return res.status(201).json(newPost);
+    } catch (err) {
+      console.error('POST error:', err);
+      return res.status(500).json({ error: err.message });
+    }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
