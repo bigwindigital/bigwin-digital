@@ -19,10 +19,14 @@ async function readPosts() {
     headers: { 'X-Master-Key': API_KEY }
   });
   const json = await r.json();
-  return Array.isArray(json.record) ? json.record : [];
+  const record = json.record;
+  // Support both { posts: [] } and plain [] formats
+  if (Array.isArray(record)) return record;
+  if (record && Array.isArray(record.posts)) return record.posts;
+  return [];
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const slug = req.query.slug || req.url.replace('/blogs/', '').split('?')[0];
 
   const posts = await readPosts();
@@ -80,7 +84,7 @@ export default async function handler(req, res) {
 
   <header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-[#00df59]/10 h-20">
     <div class="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
-      <a href="/index.html"><img src="/assets/bigwin-logo.jpg" alt="Bigwin Digital" class="h-14 object-contain"></a>
+      <a href="/index.html"><img src="/assets/bigwin-logo.jpg" alt="Bigwin Digital - Grand Your Brand Day Logo" class="h-14 object-contain"></a>
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
         <a href="/index.html" class="text-slate-300 hover:text-[#00ff66] transition-colors">Home</a>
         <a href="/about.html" class="text-slate-300 hover:text-[#00ff66] transition-colors">About</a>
@@ -136,4 +140,4 @@ export default async function handler(req, res) {
 
   res.setHeader('Content-Type', 'text/html');
   return res.status(200).send(html);
-}
+};

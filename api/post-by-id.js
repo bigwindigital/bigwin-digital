@@ -10,18 +10,22 @@ async function readPosts() {
     headers: { 'X-Master-Key': API_KEY }
   });
   const json = await r.json();
-  return Array.isArray(json.record) ? json.record : [];
+  const record = json.record;
+  // Support both { posts: [] } and plain [] formats
+  if (Array.isArray(record)) return record;
+  if (record && Array.isArray(record.posts)) return record.posts;
+  return [];
 }
 
 async function writePosts(posts) {
   await fetch(BIN_URL, {
     method:  'PUT',
     headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-    body:    JSON.stringify(posts)
+    body:    JSON.stringify({ posts })
   });
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin',  '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -55,4 +59,4 @@ export default async function handler(req, res) {
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
-}
+};
