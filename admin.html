@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Bigwin Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#e2e8f0;font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh}
+h1,h2,h3{font-family:'Outfit',sans-serif}
+
+/* ── Login ── */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.login-box{width:100%;max-width:420px}
+.card{background:#0a0d0b;border:1px solid #00df5930;border-radius:16px;padding:32px}
+
+/* ── Layout ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+#app.show{display:flex}
+.topbar{background:#000000ee;border-bottom:1px solid #00df5922;position:sticky;top:0;z-index:40;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px)}
+.body{display:grid;grid-template-columns:210px 1fr;gap:24px;max-width:1300px;width:100%;margin:0 auto;padding:32px 24px;flex:1}
+.sidebar nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:88px}
+
+/* ── Nav buttons ── */
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border-radius:10px;font-size:14px;font-weight:600;background:transparent;color:#94a3b8;border:none;cursor:pointer;transition:all .15s;text-align:left;text-decoration:none}
+.nav-btn:hover,.nav-btn.active{background:#00df5918;color:#00ff66}
+
+/* ── Panels ── */
+.panel{display:none}.panel.active{display:block}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:all .2s}
+.btn-green{background:#00df59;color:#000}.btn-green:hover{background:#00ff66;transform:translateY(-1px)}
+.btn-green:disabled{background:#1a3a24;color:#3d6b4a;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;border:1px solid #374151;color:#94a3b8}.btn-ghost:hover{color:#fff;border-color:#555}
+.btn-danger{background:transparent;border:1px solid #ef444430;color:#ef4444;padding:6px 14px;font-size:12px;border-radius:8px;cursor:pointer;font-weight:600;transition:all .15s}.btn-danger:hover{background:#ef44441a;border-color:#ef4444}
+.btn-edit{background:transparent;border:1px solid #00df5940;color:#00df59;padding:6px 14px;font-size:12px;border-radius:8px;cursor:pointer;font-weight:600;transition:all .15s}.btn-edit:hover{background:#00df591a;border-color:#00df59}
+
+/* ── Fields ── */
+.field{width:100%;background:#040706;border:1px solid #00df5930;border-radius:10px;padding:10px 14px;color:#fff;font-size:14px;outline:none;transition:border-color .2s;font-family:inherit;resize:vertical}
+.field:focus{border-color:#00ff66}
+.field::placeholder{color:#64748b}
+label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px}
+
+/* ── Stats ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat{background:#0a0d0b;border:1px solid #00df5922;border-radius:14px;padding:20px}
+.stat-num{font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:#00ff66}
+.stat-label{font-size:12px;color:#64748b;margin-top:4px}
+
+/* ── Post list ── */
+.post-table{background:#0a0d0b;border:1px solid #00df5922;border-radius:14px;overflow:hidden}
+.post-table-header{padding:14px 20px;border-bottom:1px solid #0d1a10;display:flex;align-items:center;justify-content:space-between}
+.post-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid #0d1a10;transition:background .15s}
+.post-row:last-child{border-bottom:none}
+.post-row:hover{background:#0a120c}
+.post-row-actions{display:flex;gap:6px;flex-shrink:0;margin-top:2px}
+
+/* ── Badge ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;font-family:monospace;text-transform:uppercase;letter-spacing:.05em;background:#00df5918;color:#00ff66;border:1px solid #00df5930}
+
+/* ── Rich Editor ── */
+.toolbar{display:flex;flex-wrap:wrap;gap:3px;padding:8px 10px;background:#0a0d0a;border:1px solid #00df5930;border-bottom:1px solid #1a2a1a;border-radius:10px 10px 0 0;align-items:center}
+.toolbar-sep{width:1px;height:20px;background:#00df5922;margin:0 4px;flex-shrink:0}
+.tbtn{display:inline-flex;align-items:center;justify-content:center;padding:4px 7px;border-radius:5px;border:none;background:transparent;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;min-width:28px;height:28px;white-space:nowrap}
+.tbtn:hover{background:#00df5920;color:#00ff66}
+.tbtn.active{background:#00df5930;color:#00ff66}
+.tbtn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb-select{background:#0a0d0a;border:1px solid #00df5925;color:#94a3b8;font-size:12px;border-radius:5px;padding:3px 6px;cursor:pointer;height:28px;outline:none}
+.tb-select:hover{border-color:#00df5960;color:#e2e8f0}
+.tb-select option{background:#0d110e}
+#editor{min-height:240px;background:#040706;border:1px solid #00df5930;border-top:none;border-radius:0 0 10px 10px;padding:16px;color:#e2e8f0;font-size:14px;line-height:1.75;outline:none;transition:border-color .2s}
+#editor:focus{border-color:#00ff6660}
+#editor.fullscreen-editor{position:fixed;inset:0;z-index:999;border-radius:0;padding:32px 10vw;min-height:100vh;border:none;overflow-y:auto}
+#editor:empty:before{content:attr(data-ph);color:#475569;pointer-events:none}
+#editor h1{font-size:1.8em;font-weight:800;color:#fff;margin:14px 0 6px}
+#editor h2{font-size:1.4em;font-weight:700;color:#fff;margin:12px 0 5px}
+#editor h3{font-size:1.15em;font-weight:600;color:#e2e8f0;margin:10px 0 4px}
+#editor p{margin:5px 0}
+#editor ul{list-style:disc;padding-left:22px;margin:5px 0}
+#editor ol{list-style:decimal;padding-left:22px;margin:5px 0}
+#editor li{margin:2px 0}
+#editor strong,#editor b{color:#00ff66;font-weight:700}
+#editor em,#editor i{color:#94c5ff}
+#editor u{text-decoration:underline;text-underline-offset:3px}
+#editor s{text-decoration:line-through;color:#64748b}
+#editor sub{font-size:.75em;vertical-align:sub}
+#editor sup{font-size:.75em;vertical-align:super}
+#editor code{background:#0d1a0e;color:#00ff66;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px}
+#editor pre{background:#050c06;border:1px solid #00df5930;border-radius:8px;padding:14px;overflow-x:auto;margin:8px 0}
+#editor pre code{background:none;padding:0;color:#a3e635}
+#editor blockquote{border-left:3px solid #00df59;padding:8px 14px;color:#94a3b8;margin:8px 0;background:#00df5908;border-radius:0 6px 6px 0}
+#editor a{color:#00ff66;text-decoration:underline}
+#editor hr{border:none;border-top:1px solid #00df5940;margin:14px 0}
+#editor table{border-collapse:collapse;width:100%;margin:8px 0}
+#editor td,#editor th{border:1px solid #00df5930;padding:7px 10px;font-size:13px}
+#editor th{background:#00df5915;color:#00ff66;font-weight:700}
+#editor img{max-width:100%;border-radius:8px;margin:8px 0}
+
+/* ── Modal ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:60;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal-box{background:#070b08;border:1px solid #00df5940;border-radius:20px;padding:32px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:10px;font-weight:700;font-size:13px;transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;pointer-events:none}
+#toast.show-ok{background:#00df59;color:#000;transform:translateY(0);opacity:1}
+#toast.show-err{background:#ef4444;color:#fff;transform:translateY(0);opacity:1}
+
+/* ── Form grid ── */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-actions{display:flex;gap:12px;padding-top:8px}
+
+/* ── Status box ── */
+.status-box{margin-top:16px;padding:12px;border-radius:10px;background:#0a0d0b;border:1px solid #00df5922;font-size:12px}
+.divider{border:none;border-top:1px solid #0d1a10;margin:12px 0}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ LOGIN ══════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div style="text-align:center;margin-bottom:28px">
+      <img src="assets/bigwin-logo.jpg" alt="Bigwin Digital" style="height:60px;object-fit:contain;margin-bottom:12px">
+      <h1 style="font-size:20px;color:#fff">Admin Panel</h1>
+      <p style="font-size:12px;color:#64748b;margin-top:4px">Bigwin Digital · Blog Management</p>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:16px;color:#fff;margin-bottom:6px">Welcome Back</h2>
+      <p style="font-size:13px;color:#64748b;margin-bottom:24px">Click the button below to enter the admin panel.</p>
+      <button class="btn btn-green" style="width:100%;justify-content:center;padding:14px" onclick="enterAdmin()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14"/></svg>
+        Enter Admin Panel
+      </button>
+      <hr class="divider">
+      <p style="font-size:11px;color:#475569;text-align:center">Local admin — only accessible on your computer</p>
+    </div>
+
+    <p style="text-align:center;margin-top:12px;font-size:12px">
+      <a href="index.html" style="color:#475569;text-decoration:none">← Back to website</a>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════ APP ══════════════════════ -->
+<div id="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:14px">
+      <img src="assets/bigwin-logo.jpg" style="height:38px;object-fit:contain">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#fff">Admin Panel</div>
+        <div style="font-size:11px;color:#00df59;font-family:monospace">Blog Management</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <a href="blog.html" target="_blank" class="nav-btn" style="width:auto;padding:6px 12px;font-size:13px">↗ Blog</a>
+      <a href="index.html" target="_blank" class="nav-btn" style="width:auto;padding:6px 12px;font-size:13px">↗ Website</a>
+      <button onclick="exitAdmin()" class="nav-btn" style="width:auto;padding:6px 12px;font-size:13px;color:#ef4444">Logout</button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <nav>
+        <button class="nav-btn active" id="nb-dash" onclick="show('dash')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-btn" id="nb-new" onclick="show('new')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          New Post
+        </button>
+        <button class="nav-btn" id="nb-posts" onclick="show('posts')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          All Posts
+        </button>
+
+        <div class="status-box">
+          <div style="font-size:10px;color:#00df59;font-family:monospace;font-weight:700;margin-bottom:6px">SERVER</div>
+          <div id="srv-status" style="font-size:12px;color:#64748b">Connecting…</div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Main -->
+    <main>
+
+      <!-- Dashboard -->
+      <div class="panel active" id="p-dash">
+        <h1 style="font-size:24px;color:#fff;margin-bottom:6px">Dashboard</h1>
+        <p style="font-size:14px;color:#64748b;margin-bottom:24px">Blog overview for Bigwin Digital.</p>
+
+        <div class="stats">
+          <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-label">Total Posts</div></div>
+          <div class="stat"><div class="stat-num" style="color:#fff" id="s-perf">0</div><div class="stat-label">Performance</div></div>
+          <div class="stat"><div class="stat-num" style="color:#fff" id="s-cro">0</div><div class="stat-label">Shopify & CRO</div></div>
+          <div class="stat"><div class="stat-num" style="color:#fff" id="s-seo">0</div><div class="stat-label">SEO & Social</div></div>
+        </div>
+
+        <div class="post-table">
+          <div class="post-table-header">
+            <strong style="color:#fff;font-size:14px">Recent Posts</strong>
+            <button class="btn btn-green" style="padding:7px 16px;font-size:12px" onclick="show('new')">+ New Post</button>
+          </div>
+          <div id="dash-list"><div style="padding:40px;text-align:center;color:#475569;font-size:13px">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- New Post -->
+      <div class="panel" id="p-new">
+        <h1 style="font-size:24px;color:#fff;margin-bottom:6px">New Blog Post</h1>
+        <p style="font-size:14px;color:#64748b;margin-bottom:24px">Write and publish a new article.</p>
+
+        <form id="new-form" onsubmit="submitNew(event)" style="display:flex;flex-direction:column;gap:18px">
+
+          <div class="form-group">
+            <label>Post Title *</label>
+            <input class="field" id="f-title" placeholder="e.g. How We Scaled a DTC Brand to $500k/mo" required oninput="autoSlug()">
+          </div>
+
+          <div class="form-group">
+            <label>URL Slug *
+              <span style="font-size:11px;color:#475569;font-weight:400;margin-left:8px">bigwindigital.com/blogs/<span id="slug-preview" style="color:#00ff66">your-post-slug</span></span>
+            </label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input class="field" id="f-slug" placeholder="your-post-url-slug" required style="font-family:monospace;font-size:13px" oninput="sanitizeSlug(this)">
+              <button type="button" onclick="autoSlug(true)" style="background:#00df5918;border:1px solid #00df5930;color:#00ff66;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap">↺ Generate</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Short Excerpt / Summary *</label>
+            <textarea class="field" id="f-excerpt" rows="2" placeholder="1–2 sentences shown on the blog card…" required></textarea>
+          </div>
+
+          <div class="row3">
+            <div class="form-group">
+              <label>Category *</label>
+              <select class="field" id="f-cat" required>
+                <option value="">— Select —</option>
+                <option value="performance">Performance Marketing</option>
+                <option value="cro">Shopify & CRO</option>
+                <option value="website">Website Development</option>
+                <option value="seo">Search Engine Optimisation</option>
+                <option value="social">Social Media & UGC</option>
+                <option value="strategy">Growth Strategy</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Read Time</label>
+              <input class="field" id="f-time" placeholder="e.g. 7 MIN READ" value="5 MIN READ">
+            </div>
+            <div class="form-group">
+              <label>Author *</label>
+              <input class="field" id="f-author" placeholder="e.g. Marcus Vance" required>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="form-group">
+              <label>Author Role</label>
+              <input class="field" id="f-role" placeholder="e.g. Head of Performance Strategy">
+            </div>
+            <div class="form-group">
+              <label>Result Tag (shown on card)</label>
+              <input class="field" id="f-result" placeholder="e.g. +34% Revenue · 5.2x ROAS">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Full Article Content *</label>
+
+            <!-- ── Rich Text Toolbar ── -->
+            <div class="toolbar" id="rich-toolbar">
+
+              <!-- Undo / Redo -->
+              <button type="button" class="tbtn" title="Undo (Ctrl+Z)" onclick="fe('undo')">
+                <svg viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M3 13a9 9 0 1 0 2.8-6.3L3 9"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Redo (Ctrl+Y)" onclick="fe('redo')">
+                <svg viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M21 13a9 9 0 1 1-2.8-6.3L21 9"/></svg>
+              </button>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Block style -->
+              <select class="tb-select" title="Paragraph style" onchange="fb(this.value); this.value=''">
+                <option value="" disabled selected>Paragraph</option>
+                <option value="p">Paragraph</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="h4">Heading 4</option>
+                <option value="pre">Preformatted</option>
+              </select>
+
+              <!-- Font family -->
+              <select class="tb-select" title="Font" onchange="document.execCommand('fontName',false,this.value); this.value=''">
+                <option value="" disabled selected>Font</option>
+                <option value="Plus Jakarta Sans">Jakarta Sans</option>
+                <option value="Outfit">Outfit</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="monospace">Monospace</option>
+                <option value="Arial, sans-serif">Arial</option>
+              </select>
+
+              <!-- Font size -->
+              <select class="tb-select" title="Size" onchange="document.execCommand('fontSize',false,this.value); this.value=''">
+                <option value="" disabled selected>Size</option>
+                <option value="1">XS (8pt)</option>
+                <option value="2">S (10pt)</option>
+                <option value="3">M (12pt)</option>
+                <option value="4">L (14pt)</option>
+                <option value="5">XL (18pt)</option>
+                <option value="6">2XL (24pt)</option>
+                <option value="7">3XL (36pt)</option>
+              </select>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Bold / Italic / Underline / Strike / Sub / Super / Code -->
+              <button type="button" class="tbtn" title="Bold (Ctrl+B)" onclick="fe('bold')"><b style="font-size:14px">B</b></button>
+              <button type="button" class="tbtn" title="Italic (Ctrl+I)" onclick="fe('italic')"><i style="font-size:14px">I</i></button>
+              <button type="button" class="tbtn" title="Underline (Ctrl+U)" onclick="fe('underline')"><u style="font-size:13px">U</u></button>
+              <button type="button" class="tbtn" title="Strikethrough" onclick="fe('strikeThrough')"><s style="font-size:13px">S</s></button>
+              <button type="button" class="tbtn" title="Subscript" onclick="fe('subscript')">X<sub style="font-size:9px">2</sub></button>
+              <button type="button" class="tbtn" title="Superscript" onclick="fe('superscript')">X<sup style="font-size:9px">2</sup></button>
+              <button type="button" class="tbtn" title="Inline Code" onclick="wrapSelection('code')" style="font-family:monospace;font-size:11px">&lt;&gt;</button>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Text colour / Highlight -->
+              <label class="tbtn" title="Text Colour" style="position:relative;cursor:pointer">
+                <svg viewBox="0 0 24 24" style="fill:#e2e8f0;stroke:none"><path d="M9 3l-6 18h3l1.5-4.5h9L18 21h3L15 3H9zm-1 11L11 7l3 7H8z"/></svg>
+                <input type="color" value="#00ff66" style="position:absolute;opacity:0;width:0;height:0" onchange="document.execCommand('foreColor',false,this.value)">
+              </label>
+              <label class="tbtn" title="Highlight" style="position:relative;cursor:pointer">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <input type="color" value="#00df5940" style="position:absolute;opacity:0;width:0;height:0" onchange="document.execCommand('hiliteColor',false,this.value)">
+              </label>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Alignment -->
+              <button type="button" class="tbtn" title="Align Left" onclick="fe('justifyLeft')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Align Center" onclick="fe('justifyCenter')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Align Right" onclick="fe('justifyRight')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="6" y1="18" x2="21" y2="18"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Justify" onclick="fe('justifyFull')">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              </button>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Lists / Indent -->
+              <button type="button" class="tbtn" title="Bullet List" onclick="fe('insertUnorderedList')">
+                <svg viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Numbered List" onclick="fe('insertOrderedList')">
+                <svg viewBox="0 0 24 24"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="7" fill="currentColor" stroke="none">1.</text><text x="2" y="14" font-size="7" fill="currentColor" stroke="none">2.</text><text x="2" y="20" font-size="7" fill="currentColor" stroke="none">3.</text></svg>
+              </button>
+              <button type="button" class="tbtn" title="Outdent" onclick="fe('outdent')">
+                <svg viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"/><line x1="17" y1="12" x2="6" y2="12"/><line x1="17" y1="6" x2="21" y2="6"/><line x1="17" y1="18" x2="21" y2="18"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Indent" onclick="fe('indent')">
+                <svg viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"/><line x1="7" y1="12" x2="18" y2="12"/><line x1="3" y1="6" x2="7" y2="6"/><line x1="3" y1="18" x2="7" y2="18"/></svg>
+              </button>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Link / Image / Table / Video / Quote / HR / Code block -->
+              <button type="button" class="tbtn" title="Insert Link" onclick="insertLink()">
+                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Insert Image URL" onclick="insertImage()">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Insert Table" onclick="insertTable()">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Insert Video (YouTube)" onclick="insertVideo()">
+                <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><polygon points="10 9 15 12 10 15" fill="currentColor" stroke="none"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Blockquote" onclick="fb('blockquote')">
+                <svg viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Horizontal Rule" onclick="fe('insertHorizontalRule')">—</button>
+              <button type="button" class="tbtn" title="Code Block" onclick="insertCodeBlock()" style="font-family:monospace;font-size:11px">&lt;/&gt;</button>
+
+              <div class="toolbar-sep"></div>
+
+              <!-- Clear / Fullscreen -->
+              <button type="button" class="tbtn" title="Clear Formatting" onclick="fe('removeFormat')">
+                <svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+              </button>
+              <button type="button" class="tbtn" title="Fullscreen" onclick="toggleEditorFullscreen()" id="fullscreen-btn">
+                <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </button>
+
+            </div>
+            <!-- ── Editor Area ── -->
+            <div id="editor" contenteditable="true" data-ph="Start writing your post… paste from Google Docs, Word or any website"></div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-green" id="submit-btn">✓ Publish Post</button>
+            <button type="button" class="btn btn-ghost" onclick="clearNew()">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- All Posts -->
+      <div class="panel" id="p-posts">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <div>
+            <h1 style="font-size:24px;color:#fff;margin-bottom:4px">All Posts</h1>
+            <p style="font-size:14px;color:#64748b">Manage your published blog posts.</p>
+          </div>
+          <button class="btn btn-green" onclick="show('new')">+ New Post</button>
+        </div>
+        <div class="post-table">
+          <div id="all-list"><div style="padding:40px;text-align:center;color:#475569;font-size:13px">Loading…</div></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════ EDIT MODAL ══════════════════════ -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <h2 style="font-size:20px;color:#fff">Edit Post</h2>
+      <button onclick="closeEdit()" style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer">✕</button>
+    </div>
+    <form id="edit-form" onsubmit="saveEdit(event)" style="display:flex;flex-direction:column;gap:14px">
+      <input type="hidden" id="e-id">
+      <div class="form-group"><label>Title</label><input class="field" id="e-title" required oninput="autoEditSlug()"></div>
+      <div class="form-group">
+        <label>URL Slug
+          <span style="font-size:11px;color:#475569;font-weight:400;margin-left:8px">bigwindigital.com/blogs/<span id="e-slug-preview" style="color:#00ff66">slug</span></span>
+        </label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="field" id="e-slug" required style="font-family:monospace;font-size:13px" oninput="sanitizeSlug(this); document.getElementById('e-slug-preview').textContent=this.value||'slug'">
+          <button type="button" onclick="autoEditSlug(true)" style="background:#00df5918;border:1px solid #00df5930;color:#00ff66;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap">↺ Generate</button>
+        </div>
+      </div>
+      <div class="form-group"><label>Excerpt</label><textarea class="field" id="e-excerpt" rows="2" required></textarea></div>
+      <div class="row2">
+        <div class="form-group">
+          <label>Category</label>
+          <select class="field" id="e-cat" required>
+            <option value="performance">Performance Marketing</option>
+            <option value="cro">Shopify & CRO</option>
+            <option value="website">Website Development</option>
+            <option value="seo">Search Engine Optimisation</option>
+            <option value="social">Social Media & UGC</option>
+            <option value="strategy">Growth Strategy</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Read Time</label><input class="field" id="e-time"></div>
+      </div>
+      <div class="row2">
+        <div class="form-group"><label>Author</label><input class="field" id="e-author" required></div>
+        <div class="form-group"><label>Result Tag</label><input class="field" id="e-result"></div>
+      </div>
+      <div class="form-group">
+        <label>Content (HTML)</label>
+        <textarea class="field" id="e-content" rows="8" style="font-family:monospace;font-size:12px"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-green">Save Changes</button>
+        <button type="button" class="btn btn-ghost" onclick="closeEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast">Message</div>
+
+<!-- ══════════════════════ SCRIPT ══════════════════════ -->
+<script>
+// ─── State ───────────────────────────────────────────────────────────────
+let posts = [];
+const API  = '/api/posts';
+const CATS = { performance:'Performance Marketing', cro:'Shopify & CRO', website:'Website Development', seo:'Search Engine Optimisation', social:'Social Media & UGC', strategy:'Growth Strategy' };
+
+// ─── Auth ─────────────────────────────────────────────────────────────────
+function enterAdmin() {
+  sessionStorage.setItem('bw_admin','1');
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('show');
+  boot();
+}
+
+function exitAdmin() {
+  sessionStorage.removeItem('bw_admin');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ─── Boot (called after login OR on page reload if session exists) ─────────
+function boot() {
+  loadPosts();
+}
+
+// ─── Panels ───────────────────────────────────────────────────────────────
+const PANELS = { dash:'p-dash', new:'p-new', posts:'p-posts' };
+const NAVS   = { dash:'nb-dash', new:'nb-new', posts:'nb-posts' };
+
+function show(name) {
+  Object.values(PANELS).forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.toggle('active', id === PANELS[name]);
+  });
+  Object.entries(NAVS).forEach(([k,id]) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', k === name);
+  });
+  if (name === 'dash' || name === 'posts') loadPosts();
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────
+let toastT;
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = (err ? '✗ ' : '✓ ') + msg;
+  t.className = err ? 'show-err' : 'show-ok';
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.className = '', 3000);
+}
+
+// ─── API ──────────────────────────────────────────────────────────────────
+async function loadPosts() {
+  document.getElementById('srv-status').textContent = 'Loading…';
+  try {
+    const r = await fetch(API);
+    if (!r.ok) throw new Error();
+    posts = await r.json();
+    document.getElementById('srv-status').innerHTML = '<span style="color:#00ff66">● Online</span> · ' + posts.length + ' post(s)';
+  } catch {
+    posts = [];
+    document.getElementById('srv-status').innerHTML = '<span style="color:#ef4444">● Offline</span> – start server';
+  }
+  renderDash();
+  renderAll();
+}
+
+// ─── Dashboard render ─────────────────────────────────────────────────────
+function renderDash() {
+  document.getElementById('s-total').textContent = posts.length;
+  document.getElementById('s-perf').textContent  = posts.filter(p => p.category === 'performance').length;
+  document.getElementById('s-cro').textContent   = posts.filter(p => p.category === 'cro').length;
+  document.getElementById('s-seo').textContent   = posts.filter(p => ['seo','social','strategy'].includes(p.category)).length;
+
+  const el = document.getElementById('dash-list');
+  if (posts.length === 0) {
+    el.innerHTML = `<div style="padding:48px;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">📝</div>
+      <p style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px">No posts yet</p>
+      <p style="font-size:12px;color:#64748b;margin-bottom:16px">Click "New Post" in the sidebar to get started.</p>
+      <button class="btn btn-green" onclick="show('new')">Create First Post</button>
+    </div>`;
+    return;
+  }
+  el.innerHTML = posts.slice(0,5).map(rowHTML).join('');
+}
+
+// ─── All Posts render ─────────────────────────────────────────────────────
+function renderAll() {
+  const el = document.getElementById('all-list');
+  if (posts.length === 0) {
+    el.innerHTML = `<div style="padding:40px;text-align:center;font-size:13px;color:#475569">No posts yet.</div>`;
+    return;
+  }
+  el.innerHTML = posts.map(rowHTML).join('');
+}
+
+function rowHTML(p) {
+  const date = new Date(p.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const ini  = (p.author||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  return `<div class="post-row">
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span class="badge">${CATS[p.category]||p.category}</span>
+        <span style="font-size:11px;color:#475569;font-family:monospace">${p.readTime||''} · ${date}</span>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px">${p.title}</div>
+      <div style="font-size:12px;color:#64748b">${(p.excerpt||'').slice(0,100)}…</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+        <div style="width:20px;height:20px;border-radius:50%;background:#00df5920;border:1px solid #00df5950;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#00ff66">${ini}</div>
+        <span style="font-size:11px;color:#94a3b8">${p.author||''}</span>
+        ${p.result?`<span style="font-size:11px;color:#00df59;font-family:monospace">${p.result}</span>`:''}
+      </div>
+    </div>
+    <div class="post-row-actions">
+      <button class="btn-edit" onclick="openEdit('${p.id}')">Edit</button>
+      <button class="btn-danger" onclick="delPost('${p.id}')">Delete</button>
+    </div>
+  </div>`;
+}
+
+// ─── New Post ─────────────────────────────────────────────────────────────
+async function submitNew(e) {
+  e.preventDefault();
+  const content = document.getElementById('editor').innerHTML.trim();
+  if (!content) { toast('Please write some article content.', true); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Publishing…';
+
+  const data = {
+    title:      document.getElementById('f-title').value.trim(),
+    slug:       document.getElementById('f-slug').value.trim(),
+    excerpt:    document.getElementById('f-excerpt').value.trim(),
+    category:   document.getElementById('f-cat').value,
+    readTime:   document.getElementById('f-time').value.trim().toUpperCase(),
+    author:     document.getElementById('f-author').value.trim(),
+    authorRole: document.getElementById('f-role').value.trim(),
+    result:     document.getElementById('f-result').value.trim(),
+    content
+  };
+
+  try {
+    const r = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+    if (!r.ok) throw new Error();
+    toast('Post published! 🎉');
+    clearNew();
+    show('posts');
+  } catch {
+    toast('Save failed — is "node server.js" running?', true);
+  } finally {
+    btn.disabled = false; btn.textContent = '✓ Publish Post';
+  }
+}
+
+function clearNew() {
+  document.getElementById('new-form').reset();
+  document.getElementById('editor').innerHTML = '';
+}
+
+// ─── Delete ───────────────────────────────────────────────────────────────
+async function delPost(id) {
+  if (!confirm('Delete this post permanently?')) return;
+  try {
+    await fetch(API + '/' + id, { method:'DELETE' });
+    toast('Post deleted.');
+    loadPosts();
+  } catch { toast('Delete failed.', true); }
+}
+
+// ─── Edit Modal ───────────────────────────────────────────────────────────
+function openEdit(id) {
+  const p = posts.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('e-id').value      = p.id;
+  document.getElementById('e-title').value   = p.title;
+  document.getElementById('e-excerpt').value = p.excerpt;
+  document.getElementById('e-slug').value    = p.slug || makeSlug(p.title);
+  document.getElementById('e-slug-preview').textContent = p.slug || makeSlug(p.title);
+  document.getElementById('e-cat').value     = p.category;
+  document.getElementById('e-time').value    = p.readTime || '';
+  document.getElementById('e-author').value  = p.author;
+  document.getElementById('e-result').value  = p.result || '';
+  document.getElementById('e-content').value = p.content || '';
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeEdit() { document.getElementById('edit-modal').classList.remove('open'); }
+
+document.getElementById('edit-modal').addEventListener('click', e => { if (e.target.id === 'edit-modal') closeEdit(); });
+
+async function saveEdit(e) {
+  e.preventDefault();
+  const id = document.getElementById('e-id').value;
+  const data = {
+    title:   document.getElementById('e-title').value.trim(),
+    slug:    document.getElementById('e-slug').value.trim(),
+    excerpt: document.getElementById('e-excerpt').value.trim(),
+    category:document.getElementById('e-cat').value,
+    readTime:document.getElementById('e-time').value.trim().toUpperCase(),
+    author:  document.getElementById('e-author').value.trim(),
+    result:  document.getElementById('e-result').value.trim(),
+    content: document.getElementById('e-content').value
+  };
+  try {
+    const r = await fetch(API + '/' + id, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+    if (!r.ok) throw new Error();
+    toast('Post updated!');
+    closeEdit();
+    loadPosts();
+  } catch { toast('Update failed.', true); }
+}
+
+// ─── Slug helpers ─────────────────────────────────────────────────────────
+function makeSlug(title) {
+  return title.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 80);
+}
+function sanitizeSlug(input) {
+  input.value = input.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+}
+function autoSlug(force) {
+  const title = document.getElementById('f-title').value;
+  const slugEl = document.getElementById('f-slug');
+  if (force || !slugEl.dataset.edited) {
+    slugEl.value = makeSlug(title);
+    slugEl.dataset.edited = '';
+  }
+  document.getElementById('slug-preview').textContent = slugEl.value || 'your-post-slug';
+}
+function autoEditSlug(force) {
+  const title = document.getElementById('e-title').value;
+  const slugEl = document.getElementById('e-slug');
+  if (force || !slugEl.dataset.edited) {
+    slugEl.value = makeSlug(title);
+  }
+  document.getElementById('e-slug-preview').textContent = slugEl.value || 'slug';
+}
+// Mark slug as manually edited so auto-gen stops overwriting
+document.addEventListener('DOMContentLoaded', () => {
+  const fSlug = document.getElementById('f-slug');
+  if (fSlug) fSlug.addEventListener('input', () => { fSlug.dataset.edited = '1'; });
+});
+
+// ─── Rich text editor ─────────────────────────────────────────────────────
+// ── Rich Text Editor helpers ──────────────────────────────────────────────
+// ── Rich Text Editor helpers ──────────────────────────────────────────────
+function fe(cmd, val) { document.execCommand(cmd, false, val || null); document.getElementById('editor').focus(); }
+function fb(tag) { document.execCommand('formatBlock', false, tag); document.getElementById('editor').focus(); }
+
+function wrapSelection(tag) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  if (range.collapsed) return;
+  const el = document.createElement(tag);
+  try { range.surroundContents(el); } catch(e) { fe('bold'); }
+  document.getElementById('editor').focus();
+}
+
+function insertLink() {
+  const url = prompt('Enter URL:', 'https://');
+  if (url) {
+    const text = window.getSelection().toString() || url;
+    document.execCommand('insertHTML', false, `<a href="${url}" target="_blank">${text}</a>`);
+  }
+  document.getElementById('editor').focus();
+}
+
+function insertImage() {
+  const url = prompt('Enter Image URL:');
+  if (url) document.execCommand('insertHTML', false, `<img src="${url}" alt="image" style="max-width:100%;border-radius:8px;margin:8px 0">`);
+  document.getElementById('editor').focus();
+}
+
+function insertVideo() {
+  const url = prompt('Enter YouTube video URL or embed URL:');
+  if (!url) return;
+  let embedUrl = url;
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([\w-]+)/);
+  if (yt) embedUrl = `https://www.youtube.com/embed/${yt[1]}`;
+  document.execCommand('insertHTML', false,
+    `<div style="position:relative;padding-bottom:56.25%;height:0;margin:12px 0"><iframe src="${embedUrl}" style="position:absolute;width:100%;height:100%;border-radius:8px;border:none" allowfullscreen></iframe></div>`
+  );
+  document.getElementById('editor').focus();
+}
+
+function insertTable() {
+  const rows = parseInt(prompt('Number of rows:', '3')) || 3;
+  const cols = parseInt(prompt('Number of columns:', '3')) || 3;
+  let html = '<table style="border-collapse:collapse;width:100%;margin:8px 0">';
+  for (let r = 0; r < rows; r++) {
+    html += '<tr>';
+    for (let c = 0; c < cols; c++) {
+      const tag = r === 0 ? 'th' : 'td';
+      html += `<${tag} style="border:1px solid #00df5930;padding:7px 10px;${r===0?'background:#00df5915;color:#00ff66;font-weight:700':''}">${r===0?'Header':'Cell'}</${tag}>`;
+    }
+    html += '</tr>';
+  }
+  html += '</table>';
+  document.execCommand('insertHTML', false, html);
+  document.getElementById('editor').focus();
+}
+
+function insertCodeBlock() {
+  const sel = window.getSelection();
+  const code = sel && !sel.isCollapsed ? sel.toString() : '// your code here';
+  document.execCommand('insertHTML', false,
+    `<pre style="background:#050c06;border:1px solid #00df5930;border-radius:8px;padding:14px;overflow-x:auto;margin:8px 0"><code style="color:#a3e635;font-family:monospace;font-size:12px">${code}</code></pre>`
+  );
+  document.getElementById('editor').focus();
+}
+
+function toggleEditorFullscreen() {
+  const ed = document.getElementById('editor');
+  const btn = document.getElementById('fullscreen-btn');
+  const isFs = ed.classList.toggle('fullscreen-editor');
+  btn.title = isFs ? 'Exit Fullscreen' : 'Fullscreen';
+  btn.innerHTML = isFs
+    ? `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></svg>`
+    : `<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`;
+}
+
+// ─── Init on page load ────────────────────────────────────────────────────
+if (sessionStorage.getItem('bw_admin')) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('show');
+  boot();
+}
+</script>
+</body>
+</html>

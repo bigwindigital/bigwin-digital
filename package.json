@@ -1,0 +1,10 @@
+{
+  "name": "bigwin-digital",
+  "version": "1.0.0",
+  "description": "Bigwin Digital Agency Website",
+  "engines": { "node": "18.x" },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}

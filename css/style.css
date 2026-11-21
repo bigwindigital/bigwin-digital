@@ -1,0 +1,237 @@
+/* ==========================================================================
+   Bigwin Digital - Custom Black & Vibrant Lime Green Stylesheet
+   Brand Theme: Pitch Black (#000000) & Electric Lime (#00df59 / #00ff66)
+   Tagline: "Grand Your Brand Day."
+   ========================================================================== */
+
+:root {
+  --bg-primary: #000000;
+  --bg-card: #090909;
+  --bg-card-hover: #111111;
+  --accent-green: #00df59;
+  --accent-green-bright: #00ff66;
+  --accent-green-dim: #00993a;
+  --accent-emerald: #10b981;
+  --accent-glow: rgba(0, 223, 89, 0.38);
+  --border-subtle: rgba(0, 223, 89, 0.16);
+  --border-strong: rgba(0, 223, 89, 0.45);
+  --text-muted: #94a3b8;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: #ffffff;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #0f361a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+}
+
+/* Background Cyber Grid Effect */
+.bg-cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 223, 89, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 223, 89, 0.04) 1px, transparent 1px);
+}
+
+/* Radial Glows */
+.radial-glow-hero {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(0, 223, 89, 0.18) 0%, rgba(0, 180, 70, 0.06) 45%, transparent 75%);
+  pointer-events: none;
+  filter: blur(65px);
+  z-index: 0;
+}
+
+.radial-glow-center {
+  background: radial-gradient(circle, rgba(0, 223, 89, 0.14) 0%, transparent 70%);
+  filter: blur(50px);
+}
+
+/* Brand Text Utilities */
+.text-brand-green {
+  color: #00df59;
+}
+
+.text-neon-green {
+  color: #00ff66;
+  text-shadow: 0 0 16px rgba(0, 223, 89, 0.45);
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #ffffff 0%, #00ff66 45%, #00df59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #00ff66 0%, #00df59 60%, #00a83e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tagline Element with Horizontal Accent Lines */
+.brand-tagline-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-tagline-wrapper::before {
+  content: '';
+  height: 2px;
+  width: 28px;
+  background: linear-gradient(90deg, transparent, #00df59);
+}
+.brand-tagline-wrapper::after {
+  content: '';
+  height: 2px;
+  width: 28px;
+  background: linear-gradient(90deg, #00df59, transparent);
+}
+
+/* Buttons */
+.btn-neon {
+  background: linear-gradient(135deg, #00ff66 0%, #00df59 55%, #00b843 100%);
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(0, 223, 89, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-neon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(0, 255, 102, 0.65);
+  background: linear-gradient(135deg, #4dff88 0%, #00ff66 100%);
+}
+
+.btn-neon-outline {
+  border: 1px solid var(--border-strong);
+  color: #00ff66;
+  background: rgba(0, 223, 89, 0.05);
+  transition: all 0.25s ease;
+}
+.btn-neon-outline:hover {
+  background: rgba(0, 223, 89, 0.15);
+  border-color: #00ff66;
+  box-shadow: 0 0 20px rgba(0, 223, 89, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Card Styling */
+.card-glass {
+  background: rgba(10, 12, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 223, 89, 0.14);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-glass:hover {
+  border-color: rgba(0, 223, 89, 0.4);
+  background: rgba(14, 18, 14, 0.95);
+  box-shadow: 0 10px 30px -10px rgba(0, 223, 89, 0.25);
+  transform: translateY(-3px);
+}
+
+/* Range Input Custom Styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #141c16;
+  border-radius: 4px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00ff66;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(0, 255, 102, 0.85);
+  border: 3px solid #000000;
+  transition: transform 0.15s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00ff66;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(0, 255, 102, 0.85);
+  border: 3px solid #000000;
+}
+
+/* Floating animation */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+/* Pulse Glow Badge */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+.pulse-green-dot {
+  animation: pulseDot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Infinite Marquee */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: 200%;
+  animation: marqueeScroll 25s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Modal styles */
+.modal-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
