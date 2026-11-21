@@ -1181,7 +1181,10 @@
       // Remove any previously injected dynamic cards
       grid.querySelectorAll('.dynamic-post-card').forEach(el => el.remove());
 
-      dynamicPosts.forEach(post => {
+      // Sort oldest first so insertBefore(firstChild) puts newest at the top
+      const sorted = [...dynamicPosts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+      sorted.forEach(post => {
         const initials = (post.author || '?').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
         const dateStr  = new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
         const catLabel = CAT_LABEL[post.category] || post.category;
@@ -1234,7 +1237,7 @@
           </div>
         `;
 
-        // Prepend so newest admin posts appear first
+        // Prepend so newest posts appear first
         grid.insertBefore(article, grid.firstChild);
       });
 
