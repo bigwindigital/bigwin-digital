@@ -742,7 +742,8 @@ function exportLeadsCSV() {
   a.click(); toast('CSV exported! 📊');
 }
 
-// ─── New Post ─────────────────────────────────────────────────────────────async function submitNew(e) {
+// ─── New Post ─────────────────────────────────────────────────────────────
+async function submitNew(e) {
   e.preventDefault();
   const content = document.getElementById('editor').innerHTML.trim();
   if (!content) { toast('Please write some article content.', true); return; }
