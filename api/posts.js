@@ -1,7 +1,6 @@
 // Vercel Serverless Function — /api/posts
 // GET  → return all posts
 // POST → create new post
-// Uses JSONBin.io for persistent storage (free)
 
 const BIN_ID  = process.env.JSONBIN_BIN_ID;
 const API_KEY = process.env.JSONBIN_API_KEY;
@@ -13,7 +12,6 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// Safely parse request body — handles both Vercel auto-parsed and raw stream
 async function getBody(req) {
   if (req.body && typeof req.body === 'object') return req.body;
   return new Promise((resolve) => {
@@ -26,39 +24,25 @@ async function getBody(req) {
   });
 }
 
-async function readPosts() {
-  try {
-    const r = await fetch(BIN_URL + '/latest', {
-      headers: { 'X-Master-Key': API_KEY }
-    });
-    const json = await r.json();
-    const record = json.record;
-    if (Array.isArray(record)) return record;
-    if (record && Array.isArray(record.posts)) return record.posts;
-    return [];
-  } catch (err) {
-    console.error('readPosts error:', err);
-    return [];
-  }
+async function readAll() {
+  const r = await fetch(BIN_URL + '/latest', { headers: { 'X-Master-Key': API_KEY } });
+  const json = await r.json();
+  const record = json.record || {};
+  return {
+    posts: Array.isArray(record.posts) ? record.posts : (Array.isArray(record) ? record : []),
+    leads: Array.isArray(record.leads) ? record.leads : []
+  };
 }
 
-async function writePosts(posts) {
-  try {
-    const r = await fetch(BIN_URL, {
-      method:  'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-      body:    JSON.stringify({ posts })
-    });
-    const json = await r.json();
-    console.log('writePosts response:', JSON.stringify(json).slice(0, 200));
-  } catch (err) {
-    console.error('writePosts error:', err);
-    throw err;
-  }
+async function writeAll(posts, leads) {
+  await fetch(BIN_URL, {
+    method:  'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+    body:    JSON.stringify({ posts, leads })
+  });
 }
 
 module.exports = async function handler(req, res) {
-  // CORS preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, CORS);
     return res.end();
@@ -69,25 +53,23 @@ module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.method === 'GET') {
-    const posts = await readPosts();
+    const { posts } = await readAll();
     return res.status(200).json(posts);
   }
 
   if (req.method === 'POST') {
     try {
-      const body    = await getBody(req);
-      console.log('POST body received:', JSON.stringify(body).slice(0, 200));
-      const posts   = await readPosts();
+      const body  = await getBody(req);
+      const { posts, leads } = await readAll();
       const newPost = {
         id:        Date.now().toString(),
         createdAt: new Date().toISOString(),
         ...body
       };
       posts.unshift(newPost);
-      await writePosts(posts);
+      await writeAll(posts, leads);
       return res.status(201).json(newPost);
     } catch (err) {
-      console.error('POST error:', err);
       return res.status(500).json({ error: err.message });
     }
   }
