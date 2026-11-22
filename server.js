@@ -19,6 +19,7 @@ const path = require('path');
 const PORT       = process.env.PORT || 3000;
 const PUBLIC_DIR = __dirname;
 const POSTS_FILE = path.join(__dirname, 'data', 'posts.json');
+const LEADS_FILE = path.join(__dirname, 'data', 'leads.json');
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -33,6 +34,19 @@ function readPosts() {
 
 function writePosts(posts) {
   fs.writeFileSync(POSTS_FILE, JSON.stringify(posts, null, 2), 'utf-8');
+}
+
+function readLeads() {
+  try {
+    const raw = fs.readFileSync(LEADS_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function writeLeads(leads) {
+  fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf-8');
 }
 
 function sendJSON(res, status, data) {
@@ -286,6 +300,54 @@ const server = http.createServer(async (req, res) => {
     posts = posts.filter(p => p.id !== id);
     if (posts.length === before) return sendJSON(res, 404, { error: 'Post not found' });
     writePosts(posts);
+    return sendJSON(res, 200, { success: true });
+  }
+
+  // ── Leads API ─────────────────────────────────────────────────────────────
+
+  // GET /api/leads
+  if (url === '/api/leads' && method === 'GET') {
+    return sendJSON(res, 200, readLeads());
+  }
+
+  // POST /api/leads
+  if (url === '/api/leads' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const leads = readLeads();
+      const newLead = { id: Date.now().toString(), createdAt: new Date().toISOString(), status: 'new', ...body };
+      leads.unshift(newLead);
+      writeLeads(leads);
+      return sendJSON(res, 201, newLead);
+    } catch(e) {
+      return sendJSON(res, 400, { error: 'Invalid JSON body' });
+    }
+  }
+
+  // PUT /api/leads?id=...  (update status)
+  if (url.startsWith('/api/leads') && method === 'PUT') {
+    const idParam = req.url.split('?')[1]?.match(/id=([^&]+)/)?.[1];
+    if (!idParam) return sendJSON(res, 400, { error: 'Missing lead id' });
+    try {
+      const body  = await readBody(req);
+      const leads = readLeads();
+      const idx   = leads.findIndex(l => l.id === idParam);
+      if (idx === -1) return sendJSON(res, 404, { error: 'Lead not found' });
+      leads[idx] = { ...leads[idx], ...body };
+      writeLeads(leads);
+      return sendJSON(res, 200, leads[idx]);
+    } catch(e) {
+      return sendJSON(res, 400, { error: 'Invalid JSON body' });
+    }
+  }
+
+  // DELETE /api/leads?id=...
+  if (url.startsWith('/api/leads') && method === 'DELETE') {
+    const idParam = req.url.split('?')[1]?.match(/id=([^&]+)/)?.[1];
+    if (!idParam) return sendJSON(res, 400, { error: 'Missing lead id' });
+    let leads = readLeads();
+    leads = leads.filter(l => l.id !== idParam);
+    writeLeads(leads);
     return sendJSON(res, 200, { success: true });
   }
 

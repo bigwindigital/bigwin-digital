@@ -1235,7 +1235,7 @@
         <span id="step-indicator-3" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 font-bold text-xs flex items-center justify-center">3</span>
       </div>
 
-      <form id="audit-form">
+      <form id="audit-form" novalidate>
 
         <!-- Step 1: Store & Revenue -->
         <div id="audit-step-1" class="space-y-6">
@@ -1312,20 +1312,62 @@
 
           <div class="space-y-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Your Name</label>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Your Name <span class="text-[#00ff66]">*</span></label>
               <input type="text" id="audit-name" required placeholder="Alex Morgan" class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff66]">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Work Email *</label>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Work Email <span class="text-[#00ff66]">*</span></label>
               <input type="email" id="audit-email" required placeholder="alex@brand.com" class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff66]">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Phone / WhatsApp (Optional for instant notifications)</label>
-              <input type="tel" id="audit-phone" placeholder="+1 (555) 000-0000" class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff66]">
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Phone / WhatsApp <span class="text-[#00ff66]">*</span></label>
+              <input type="tel" id="audit-phone" required placeholder="+91 98765 43210" class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff66]">
             </div>
+
+            <!-- Services Multi-Select -->
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-1">Notes / Target Goals</label>
-              <textarea id="audit-notes" rows="2" placeholder="Tell us about any specific hurdles or target revenue..." class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-[#00ff66]"></textarea>
+              <label class="block text-xs font-semibold text-slate-300 mb-1">Services Required <span class="text-[#00ff66]">*</span></label>
+              <div class="relative" id="services-dropdown-wrap">
+                <!-- Trigger -->
+                <button type="button" id="services-trigger" onclick="toggleServicesDropdown()"
+                  class="w-full bg-[#030504] border border-[#00df59]/25 rounded-xl px-4 py-3 text-sm text-left flex items-center justify-between focus:outline-none focus:border-[#00ff66]">
+                  <span id="services-trigger-text" class="text-slate-400">Select services…</span>
+                  <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <!-- Dropdown -->
+                <div id="services-dropdown" class="hidden absolute z-50 w-full mt-1 bg-[#080e09] border border-[#00df59]/30 rounded-xl shadow-xl overflow-hidden">
+                  <div class="p-2 space-y-1">
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Performance Marketing" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Performance Marketing</span>
+                    </label>
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Shopify & CRO" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Shopify & CRO</span>
+                    </label>
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Search Engine Optimisation" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Search Engine Optimisation</span>
+                    </label>
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Social Media & UGC" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Social Media & UGC</span>
+                    </label>
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Website Development" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Website Development</span>
+                    </label>
+                    <label class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#00df59]/10 cursor-pointer transition-colors">
+                      <input type="checkbox" value="Growth Strategy" class="audit-service w-4 h-4 accent-[#00df59] rounded" onchange="updateServicesLabel()">
+                      <span class="text-sm text-white font-medium">Growth Strategy</span>
+                    </label>
+                  </div>
+                  <div class="border-t border-[#00df59]/10 px-3 py-2">
+                    <button type="button" onclick="toggleServicesDropdown()" class="w-full text-xs font-bold text-[#00df59] py-1">Done ✓</button>
+                  </div>
+                </div>
+              </div>
+              <p id="services-error" class="hidden text-xs text-red-400 mt-1">Please select at least one service.</p>
             </div>
           </div>
 
@@ -1340,19 +1382,22 @@
         </div>
 
         <!-- Success Step -->
-        <div id="audit-step-success" class="text-center py-6 hidden space-y-4">
-          <div class="w-16 h-16 rounded-full bg-[#00df59]/20 text-[#00ff66] border border-[#00df59]/40 flex items-center justify-center mx-auto">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div id="audit-step-success" class="text-center py-8 hidden space-y-5">
+          <div class="w-20 h-20 rounded-full bg-[#00df59]/20 text-[#00ff66] border border-[#00df59]/40 flex items-center justify-center mx-auto">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
             </svg>
           </div>
-          <h3 class="text-2xl font-heading font-extrabold text-white">Store Audit In Queue!</h3>
-          <p class="text-slate-300 text-sm leading-relaxed max-w-sm mx-auto">
-            Our Senior Growth Strategist at Bigwin Digital has received your store URL and is preparing a detailed audit video covering your funnel, paid ads, and SEO opportunities.
-          </p>
-          <div class="pt-4">
-            <button type="button" data-close-audit-modal class="btn-neon-outline px-6 py-2.5 rounded-xl text-xs font-bold">
-              Done & Return to Site
+          <div>
+            <h3 class="text-3xl font-heading font-extrabold text-white mb-2">Thank You! 🎉</h3>
+            <p class="text-[#00ff66] font-bold text-base mb-3">Our team will connect with you shortly.</p>
+            <p class="text-slate-400 text-xs leading-relaxed max-w-xs mx-auto">
+              A Senior Growth Strategist from Bigwin Digital will reach out within <span class="text-white font-semibold">24 hours</span> to discuss your free audit.
+            </p>
+          </div>
+          <div class="pt-2">
+            <button type="button" data-close-audit-modal class="btn-neon-outline px-8 py-2.5 rounded-xl text-xs font-bold">
+              Back to Site
             </button>
           </div>
         </div>
@@ -1386,28 +1431,79 @@
   <!-- Scripts -->
   <script src="js/app.js"></script>
   <script>
+  // ── Services Dropdown ───────────────────────────────────────────────────
+  function toggleServicesDropdown() {
+    const dd = document.getElementById('services-dropdown');
+    dd.classList.toggle('hidden');
+  }
+  function updateServicesLabel() {
+    const checked = [...document.querySelectorAll('.audit-service:checked')].map(cb => cb.value);
+    const trigger = document.getElementById('services-trigger-text');
+    trigger.textContent = checked.length ? checked.join(', ') : 'Select services…';
+    trigger.className   = checked.length ? 'text-white text-sm truncate' : 'text-slate-400';
+    document.getElementById('services-error').classList.add('hidden');
+  }
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('services-dropdown-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('services-dropdown')?.classList.add('hidden');
+    }
+  });
+
   // ── Audit Form Lead Capture ──────────────────────────────────────────────
   document.getElementById('audit-form').addEventListener('submit', async function(e) {
     e.preventDefault();
+
+    // ── JS Validation ──
+    const name    = document.getElementById('audit-name')?.value?.trim();
+    const email   = document.getElementById('audit-email')?.value?.trim();
+    const phone   = document.getElementById('audit-phone')?.value?.trim();
+    const selectedServices = [...document.querySelectorAll('.audit-service:checked')].map(cb => cb.value);
+
+    // Helper to show inline error
+    function fieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.borderColor = '#ef4444';
+      let err = el.parentElement.querySelector('.field-err');
+      if (!err) { err = document.createElement('p'); err.className = 'field-err'; err.style.cssText = 'color:#ef4444;font-size:11px;margin-top:4px'; el.parentElement.appendChild(err); }
+      err.textContent = msg;
+    }
+    function clearErrors() {
+      document.querySelectorAll('.field-err').forEach(e => e.remove());
+      ['audit-name','audit-email','audit-phone'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.borderColor = '';
+      });
+      document.getElementById('services-error')?.classList.add('hidden');
+    }
+
+    clearErrors();
+    let valid = true;
+
+    if (!name)  { fieldError('audit-name',  'Name is required'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { fieldError('audit-email', 'Valid email is required'); valid = false; }
+    if (!phone) { fieldError('audit-phone', 'Phone number is required'); valid = false; }
+    if (selectedServices.length === 0) {
+      document.getElementById('services-error')?.classList.remove('hidden');
+      valid = false;
+    }
+    if (!valid) return;
+
+    // ── Submit ──
     const submitBtn = this.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
 
-    // Collect services selected
-    const services = [];
-    document.querySelectorAll('#audit-step-2 input[type="checkbox"]:checked').forEach(cb => {
-      services.push(cb.closest('label').querySelector('span').textContent.trim());
-    });
-
     const lead = {
-      name:       document.getElementById('audit-name')?.value?.trim()    || '',
-      email:      document.getElementById('audit-email')?.value?.trim()   || '',
-      phone:      document.getElementById('audit-phone')?.value?.trim()   || '',
-      website:    document.getElementById('audit-website-url')?.value?.trim() || '',
-      revenue:    document.getElementById('audit-revenue-tier')?.value    || '',
-      services:   services.join(', '),
-      notes:      document.getElementById('audit-notes')?.value?.trim()   || '',
-      source:     'Audit Form'
+      name,
+      email,
+      phone,
+      website:  document.getElementById('audit-website-url')?.value?.trim() || '',
+      revenue:  document.getElementById('audit-revenue-tier')?.value || '',
+      services: selectedServices.join(', '),
+      source:   'Audit Form'
     };
 
     try {
@@ -1420,13 +1516,14 @@
       console.warn('Lead capture failed:', err.message);
     }
 
-    // Show success step regardless
+    // ── Show success ──
     ['audit-step-1','audit-step-2','audit-step-3'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
     });
-    const success = document.getElementById('audit-step-success');
-    if (success) success.classList.remove('hidden');
+    document.getElementById('audit-step-success')?.classList.remove('hidden');
+    // Reset dot indicators
+    document.querySelectorAll('.audit-dot').forEach((d,i) => d.classList.toggle('active', i === 2));
 
     submitBtn.disabled = false;
     submitBtn.textContent = 'Generate Free Audit';
