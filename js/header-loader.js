@@ -35,6 +35,15 @@
   ].join('');
   document.body.appendChild(wa);
 
+  // ── Shared Footer Inject ───────────────────────────────────────────────
+  var footerPlaceholder = document.getElementById('site-footer');
+  if (footerPlaceholder) {
+    fetch('footer.html')
+      .then(r => r.text())
+      .then(html => { footerPlaceholder.outerHTML = html; })
+      .catch(() => console.warn('footer.html could not be loaded'));
+  }
+
   // ── Shared Header Inject ───────────────────────────────────────────────
   const placeholder = document.getElementById('site-header');
   if (!placeholder) return;
