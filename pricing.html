@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Packages | Bigwin Digital - Grand Your Brand Day</title>
+  <meta name="description" content="Transparent growth packages from Bigwin Digital. Zero hidden fees. Month-to-month flexibility. Pick the plan that fits your current store revenue.">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'><rect width='32' height='32' rx='6' fill='%23000000'/><rect x='4' y='6' width='4' height='4' fill='%2300df59'/><rect x='9' y='6' width='4' height='4' fill='%2300df59'/><rect x='4' y='11' width='4' height='4' fill='%2300df59'/><path d='M8 4H20C24 4 27 7 27 11C27 13.5 25.5 15.5 23 16.5C26 17.5 28 20 28 23C28 27.5 24.5 30 20 30H8V4Z' fill='white'/><path d='M4 22C7 16 14 13 22 14L20 18C14 17 8 19 6 24L4 22Z' fill='%2300df59'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#000000',
+              dark: '#080808',
+              card: '#0a0d0b',
+              cardHover: '#111612',
+              green: '#00df59',
+              neon: '#00ff66',
+              emerald: '#10b981',
+              border: 'rgba(0, 223, 89, 0.16)',
+              borderHover: 'rgba(0, 255, 102, 0.45)'
+            }
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#000000] text-slate-100 font-sans antialiased overflow-x-hidden relative bg-cyber-grid">
+
+  <div class="radial-glow-hero"></div>
+
+  <!-- Shared Header -->
+  <div id="site-header"></div>
+  <script src="js/header-loader.js"></script>
+
+  <main class="relative z-10 pt-32 sm:pt-36">
+
+    <!-- Page Hero -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-4 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#00df59]/10 border border-[#00df59]/25 text-[#00ff66] text-xs font-bold uppercase tracking-wider mb-4">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#00ff66]"></span>
+        Transparent Partnership
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-heading font-extrabold text-white tracking-tight mb-5">
+        Transparent Growth Packages
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-8">
+        Zero hidden fees. Month-to-month flexibility. Pick the plan that fits your current store revenue.
+      </p>
+
+      <!-- Monthly / Quarterly Toggle -->
+      <div class="inline-flex items-center gap-4 bg-[#0a0d0a] p-1.5 rounded-full border border-[#00df59]/25">
+        <span class="text-sm font-semibold text-slate-300 pl-3">Monthly</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="pricing-toggle" class="sr-only peer">
+          <div class="w-11 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00df59]"></div>
+        </label>
+        <span class="text-sm font-semibold text-slate-300 pr-2 flex items-center gap-1.5">
+          <span>Quarterly</span>
+          <span class="px-2 py-0.5 rounded-full bg-[#00df59]/20 text-[#00ff66] text-[11px] font-bold border border-[#00df59]/35">Save 15%</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+        <!-- Tier 1: Growth Starter -->
+        <div class="card-glass rounded-3xl p-8 border border-[#00df59]/15 flex flex-col justify-between">
+          <div>
+            <div class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Growth Starter</div>
+            <p class="text-xs text-slate-400 mb-6">For emerging DTC brands scaling from $15k to $50k/mo.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span id="price-starter" class="text-4xl font-heading font-black text-white">$2,500</span>
+              <span class="text-xs text-slate-400 pricing-duration">/ month</span>
+            </div>
+            <ul class="space-y-3.5 text-sm text-slate-300 mb-8 border-t border-zinc-800 pt-6">
+              <li class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span>Meta Ads Management (FB &amp; Instagram)</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span>Store Speed &amp; Mobile CRO Tuning</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span>Basic Social Media Organic Calendar</span>
+              </li>
+              <li class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span>Bi-Weekly Performance Reviews</span>
+              </li>
+            </ul>
+          </div>
+          <button data-open-audit-modal class="btn-neon-outline w-full py-3.5 rounded-xl font-bold text-center text-sm">
+            Get Started
+          </button>
+        </div>
+
+        <!-- Tier 2: Scale Accelerator (Featured) -->
+        <div class="card-glass rounded-3xl p-8 sm:p-10 border-2 border-[#00df59]/60 bg-[#090f0b] relative flex flex-col justify-between shadow-2xl shadow-[#00df59]/25 scale-105 z-10">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-[#00df59] to-[#00ff66] text-black text-xs font-black uppercase tracking-wider shadow-md whitespace-nowrap">
+            Most Popular Partner Tier
+          </div>
+          <div>
+            <div class="text-sm font-bold text-[#00df59] uppercase tracking-wider mb-2">Scale Accelerator</div>
+            <p class="text-xs text-slate-400 mb-6">For brands doing $50k–$200k/mo ready for aggressive scale.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span id="price-scale" class="text-5xl font-heading font-black text-white">$4,500</span>
+              <span class="text-xs text-slate-400 pricing-duration">/ month</span>
+            </div>
+            <ul class="space-y-3.5 text-sm text-slate-200 mb-8 border-t border-zinc-800 pt-6">
+              <li class="flex items-center gap-2.5 font-medium"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Full Omnichannel Ads (Meta + Google Shopping)</span></li>
+              <li class="flex items-center gap-2.5 font-medium"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Custom Landing Pages &amp; Ongoing CRO Testing</span></li>
+              <li class="flex items-center gap-2.5 font-medium"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>E-Commerce SEO (Collections &amp; Keyword Sprint)</span></li>
+              <li class="flex items-center gap-2.5 font-medium"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Short-Form Video Strategy &amp; Social Optimisation</span></li>
+              <li class="flex items-center gap-2.5 font-medium"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Direct Slack Channel &amp; Weekly Strategy Calls</span></li>
+            </ul>
+          </div>
+          <button data-open-audit-modal class="btn-neon w-full py-4 rounded-xl font-bold text-center text-sm shadow-lg shadow-[#00df59]/30">
+            Apply to Scale
+          </button>
+        </div>
+
+        <!-- Tier 3: Enterprise Dominance -->
+        <div class="card-glass rounded-3xl p-8 border border-[#00df59]/15 flex flex-col justify-between">
+          <div>
+            <div class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Enterprise Dominance</div>
+            <p class="text-xs text-slate-400 mb-6">For $200k+/mo market leaders dominating their category.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span id="price-enterprise" class="text-4xl font-heading font-black text-white">$7,500</span>
+              <span class="text-xs text-slate-400 pricing-duration">/ month</span>
+            </div>
+            <ul class="space-y-3.5 text-sm text-slate-300 mb-8 border-t border-zinc-800 pt-6">
+              <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Full Omnichannel + TikTok Ads Scaling</span></li>
+              <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Full Custom Storefront / Headless Shopify Dev</span></li>
+              <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Digital PR &amp; Tier-1 Press Link Acquisition</span></li>
+              <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#00df59]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span>Dedicated CMO &amp; Full Creative Studio Squad</span></li>
+            </ul>
+          </div>
+          <button data-open-audit-modal class="btn-neon-outline w-full py-3.5 rounded-xl font-bold text-center text-sm">
+            Contact Enterprise Team
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="mt-16 text-center">
+        <p class="text-slate-400 text-sm mb-4">Not sure which plan fits? Let's talk — it's free.</p>
+        <button data-open-audit-modal class="btn-neon px-8 py-4 rounded-xl font-extrabold text-base shadow-lg shadow-[#00df59]/25 inline-flex items-center gap-2.5">
+          <span>Get a Free Growth Audit</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER (copied from index.html)
+       ============================================================ -->
+  <footer class="border-t border-zinc-900 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div class="md:col-span-2">
+        <a href="/"><img src="assets/bigwin-logo.jpg" alt="Bigwin Digital" class="h-14 w-auto object-contain mb-4"></a>
+        <p class="text-slate-400 text-sm leading-relaxed max-w-sm">Grand Your Brand Day. We scale DTC &amp; E-Commerce brands to 8-figures with performance ads, SEO, and high-converting storefronts.</p>
+      </div>
+      <div>
+        <div class="text-xs uppercase font-mono tracking-wider text-[#00df59] font-bold mb-4">Services</div>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li><a href="website-development.html" class="hover:text-[#00ff66] transition-colors">Website Development</a></li>
+          <li><a href="search-engine-optimisation.html" class="hover:text-[#00ff66] transition-colors">Search Engine Optimisation</a></li>
+          <li><a href="social-media-optimisation.html" class="hover:text-[#00ff66] transition-colors">Social Media Optimisation</a></li>
+          <li><a href="performance-marketing.html" class="hover:text-[#00ff66] transition-colors">Performance Marketing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-xs uppercase font-mono tracking-wider text-[#00df59] font-bold mb-4">Company</div>
+        <ul class="space-y-2.5 text-sm text-slate-400">
+          <li><a href="about.html" class="hover:text-[#00ff66] transition-colors">About Us</a></li>
+          <li><a href="blog.html" class="hover:text-[#00ff66] transition-colors">Blog</a></li>
+          <li><a href="pricing.html" class="hover:text-[#00ff66] transition-colors">Pricing</a></li>
+          <li><a href="contact.html" class="hover:text-[#00ff66] transition-colors">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-zinc-900 py-6 text-center text-xs text-slate-500">
+      &copy; 2026 Bigwin Digital. Grand Your Brand Day.
+    </div>
+  </footer>
+
+  <!-- Free Audit Modal (same as homepage) -->
+  <div id="audit-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-lg bg-[#060b07] border border-[#00df59]/30 rounded-3xl shadow-2xl shadow-black overflow-hidden">
+      <button id="close-audit-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10 p-1">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <div class="p-8">
+        <h3 class="text-2xl font-heading font-extrabold text-white mb-1">Claim Your Free Audit</h3>
+        <p class="text-slate-400 text-sm mb-6">A Senior Growth Strategist will review your store and reach out within 24 hours.</p>
+        <form id="audit-form-pricing" class="space-y-4">
+          <input type="text" id="af-name" placeholder="Your Name" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#00df59]">
+          <input type="email" id="af-email" placeholder="Work Email" required class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#00df59]">
+          <input type="text" id="af-brand" placeholder="Brand / Store URL" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#00df59]">
+          <button type="submit" class="btn-neon w-full py-3.5 rounded-xl font-extrabold text-sm">Get My Free Audit →</button>
+        </form>
+        <div id="audit-success-pricing" class="hidden text-center py-6">
+          <div class="text-4xl mb-3">🎉</div>
+          <div class="text-xl font-bold text-white mb-2">Thank You!</div>
+          <div class="text-[#00ff66] font-semibold mb-1">Our team will connect with you shortly.</div>
+          <div class="text-slate-400 text-sm">A Senior Growth Strategist from Bigwin Digital will reach out within <strong>24 hours</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Pricing toggle
+    const toggle = document.getElementById('pricing-toggle');
+    const monthly = { starter: '$2,500', scale: '$4,500', enterprise: '$7,500' };
+    const quarterly = { starter: '$2,125', scale: '$3,825', enterprise: '$6,375' };
+    if (toggle) {
+      toggle.addEventListener('change', () => {
+        const prices = toggle.checked ? quarterly : monthly;
+        const dur = toggle.checked ? '/ quarter' : '/ month';
+        document.getElementById('price-starter').textContent = prices.starter;
+        document.getElementById('price-scale').textContent = prices.scale;
+        document.getElementById('price-enterprise').textContent = prices.enterprise;
+        document.querySelectorAll('.pricing-duration').forEach(el => el.textContent = dur);
+      });
+    }
+
+    // Modal
+    document.getElementById('close-audit-modal')?.addEventListener('click', () => {
+      document.getElementById('audit-modal').classList.add('hidden');
+    });
+    document.getElementById('audit-form-pricing')?.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('audit-form-pricing').classList.add('hidden');
+      document.getElementById('audit-success-pricing').classList.remove('hidden');
+    });
+  </script>
+
+</body>
+</html>
