@@ -35,15 +35,24 @@
   ].join('');
   document.body.appendChild(wa);
 
-  // ── Shared Footer Inject (wait for full DOM so site-footer div exists) ──
+  // ── Shared Footer Inject ──────────────────────────────────────────────
+  // Appends footer.html directly to <body> — no placeholder div needed.
+  // Every page that loads this script gets the footer automatically.
   document.addEventListener('DOMContentLoaded', function () {
-    var footerPlaceholder = document.getElementById('site-footer');
-    if (footerPlaceholder) {
-      fetch('footer.html')
-        .then(r => r.text())
-        .then(html => { footerPlaceholder.outerHTML = html; })
-        .catch(() => console.warn('footer.html could not be loaded'));
-    }
+    fetch('footer.html')
+      .then(r => r.text())
+      .then(html => {
+        // Replace #site-footer placeholder if present, else append to body
+        var placeholder = document.getElementById('site-footer');
+        if (placeholder) {
+          placeholder.outerHTML = html;
+        } else {
+          var wrapper = document.createElement('div');
+          wrapper.innerHTML = html;
+          document.body.appendChild(wrapper.firstElementChild);
+        }
+      })
+      .catch(() => console.warn('footer.html could not be loaded'));
   });
 
   // ── Shared Header Inject ───────────────────────────────────────────────
