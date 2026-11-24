@@ -3,10 +3,16 @@
  * Fetches header.html and injects it into #site-header on every page.
  * Also sets the active nav link based on current page filename.
  * Also injects the WhatsApp floating button on every page.
+ * Also loads the timed popup lead form on every page.
  *
  * To change WhatsApp number: update WHATSAPP_NUMBER below.
  */
 (function () {
+  // ── Timed Popup Lead Form ─────────────────────────────────────────────
+  var popupScript = document.createElement('script');
+  popupScript.src = 'js/popup-lead.js';
+  document.head.appendChild(popupScript);
+
   // ── WhatsApp Floating Button ───────────────────────────────────────────
   var WHATSAPP_NUMBER = '919685892813'; // No + prefix
   var WHATSAPP_MSG    = encodeURIComponent('Hi Bigwin Digital! I\'d like to know more about your services.');
