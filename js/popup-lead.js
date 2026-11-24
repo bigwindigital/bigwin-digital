@@ -1,14 +1,12 @@
-/**
+﻿/**
  * Bigwin Digital — Timed Popup Lead Form
  * - Appears after 10 seconds on every page
- * - Skipped if user already submitted this session (sessionStorage)
+ * - Shows every time the page loads/refreshes
  * - Same 3-step form as the Free Store Audit button
  * - Submits lead to /api/leads with source = "Popup Form"
  * - Works on every page via header-loader.js
  */
 (function () {
-  // Don't show if already submitted this session
-  if (sessionStorage.getItem('bw_popup_done')) return;
 
   var DELAY_MS = 3000; // 3 seconds
 
@@ -206,7 +204,7 @@
       console.warn('Popup lead capture failed:', e);
     }
 
-    sessionStorage.setItem('bw_popup_done', '1');
+    sessionStorage.removeItem('bw_popup_done'); // always allow next load
     dot(3);
     show('bw-s4');
   }
@@ -226,8 +224,6 @@
       // Don't show on admin page
       if (location.pathname.includes('admin')) return;
       // Don't show if already submitted
-      if (sessionStorage.getItem('bw_popup_done')) return;
-
       document.body.appendChild(el);
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { el.classList.add('bw-visible'); });
