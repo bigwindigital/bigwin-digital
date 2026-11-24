@@ -10,7 +10,7 @@
   // Don't show if already submitted this session
   if (sessionStorage.getItem('bw_popup_done')) return;
 
-  var DELAY_MS = 10000; // 10 seconds
+  var DELAY_MS = 3000; // 3 seconds
 
   // ── Inject CSS ───────────────────────────────────────────────────────────
   var style = document.createElement('style');
@@ -211,8 +211,17 @@
     show('bw-s4');
   }
 
+  // ── Run after DOM is ready (handles dynamic script injection) ───────────
+  function onReady(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn(); // DOM already ready — run immediately
+    }
+  }
+
   // ── Attach to DOM & wire events after mount ──────────────────────────────
-  document.addEventListener('DOMContentLoaded', function () {
+  onReady(function () {
     setTimeout(function () {
       // Don't show on admin page
       if (location.pathname.includes('admin')) return;
