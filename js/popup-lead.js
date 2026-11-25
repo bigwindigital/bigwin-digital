@@ -32,8 +32,7 @@
     '.bw-cb-label:hover{border-color:rgba(0,223,89,.4);} .bw-cb-label input{accent-color:#00df59;}',
     '.bw-err{color:#ef4444;font-size:11px;margin-top:4px;display:none;}',
     '.bw-err.show{display:block;}',
-    '@keyframes bw-countdown{from{width:100%}to{width:0%}}',
-    '#bw-timer-bar{height:3px;background:#00df59;border-radius:2px;animation:bw-countdown 10s linear forwards;}',
+    '',
   ].join('');
   document.head.appendChild(style);
 
@@ -42,7 +41,7 @@
   el.id = 'bw-popup-overlay';
   el.innerHTML = [
     '<div id="bw-popup-box">',
-    '  <div id="bw-timer-bar"></div>',
+    '',
     '  <button id="bw-popup-close" aria-label="Close">',
     '    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>',
     '  </button>',
