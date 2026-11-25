@@ -12,6 +12,7 @@ const DEFAULT_CONFIG = {
   enabled:     false,
   imageBase64: '',
   linkUrl:     '',
+  buttonText:  'Claim This Offer',
   altText:     'Special Offer',
   updatedAt:   ''
 };
@@ -113,6 +114,7 @@ module.exports = async function handler(req, res) {
         enabled:     !!body.enabled,
         imageBase64: body.imageBase64 || '',
         linkUrl:     body.linkUrl     || '',
+        buttonText:  body.buttonText  || 'Claim This Offer',
         altText:     body.altText     || 'Special Offer',
         updatedAt:   new Date().toISOString()
       };
