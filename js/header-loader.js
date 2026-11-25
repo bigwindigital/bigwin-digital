@@ -18,6 +18,11 @@
   waCtaScript.src = 'js/whatsapp-cta-popup.js';
   document.head.appendChild(waCtaScript);
 
+  // ── Offer Image Popup (15s delay, admin-controlled) ────────────────────
+  var offerScript = document.createElement('script');
+  offerScript.src = 'js/offer-popup.js';
+  document.head.appendChild(offerScript);
+
   // ── WhatsApp Floating Button ───────────────────────────────────────────
   var WHATSAPP_NUMBER = '919685892813'; // No + prefix
   var WHATSAPP_MSG    = encodeURIComponent('Hi Bigwin Digital! I\'d like to know more about your services.');

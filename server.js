@@ -20,6 +20,7 @@ const PORT       = process.env.PORT || 3000;
 const PUBLIC_DIR = __dirname;
 const POSTS_FILE = path.join(__dirname, 'data', 'posts.json');
 const LEADS_FILE = path.join(__dirname, 'data', 'leads.json');
+const OFFER_POPUP_FILE = path.join(__dirname, 'data', 'offer-popup.json');
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -49,6 +50,19 @@ function writeLeads(leads) {
   fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf-8');
 }
 
+
+function readOfferPopup() {
+  try {
+    const raw = fs.readFileSync(OFFER_POPUP_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return { enabled: false, imageBase64: '', linkUrl: '', altText: 'Special Offer', updatedAt: '' };
+  }
+}
+
+function writeOfferPopup(data) {
+  fs.writeFileSync(OFFER_POPUP_FILE, JSON.stringify(data, null, 2), 'utf-8');
+}
 function sendJSON(res, status, data) {
   const body = JSON.stringify(data);
   res.writeHead(status, {

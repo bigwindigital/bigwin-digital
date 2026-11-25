@@ -216,6 +216,11 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
           <span id="leads-new-badge" style="display:none;position:absolute;top:6px;right:8px;background:#00df59;color:#000;font-size:9px;font-weight:800;padding:1px 5px;border-radius:20px;line-height:1.6">NEW</span>
         </button>
 
+        
+        <button class="nav-btn" id="nb-offer" onclick="show('offer')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Offer Popup
+        </button>
         <div class="status-box">
           <div style="font-size:10px;color:#00df59;font-family:monospace;font-weight:700;margin-bottom:6px">SERVER</div>
           <div id="srv-status" style="font-size:12px;color:#64748b">Connecting…</div>
@@ -492,6 +497,66 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
         </div>
       </div>
 
+
+      <!-- ---------------------------------------------------------------
+           OFFER POPUP PANEL
+           --------------------------------------------------------------- -->
+      <div class="panel" id="p-offer">
+        <h1 style="font-size:24px;color:#fff;margin-bottom:6px">Offer Popup</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:28px">Upload a 1080�1080 px offer image. When enabled, it appears on the website 15 seconds after page load.</p>
+
+        <div class="card" style="max-width:600px">
+
+          <!-- Enable toggle -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #1e2920">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#fff">Enable Offer Popup</div>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Turn on to show the popup to website visitors</div>
+            </div>
+            <label style="position:relative;display:inline-block;width:48px;height:26px;cursor:pointer">
+              <input type="checkbox" id="offer-enabled" style="opacity:0;width:0;height:0">
+              <span id="offer-toggle-track" style="position:absolute;inset:0;border-radius:999px;background:#27272a;transition:background .2s"></span>
+              <span id="offer-toggle-thumb" style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.4)"></span>
+            </label>
+          </div>
+
+          <!-- Image upload -->
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:8px">Offer Image (1080 � 1080 px recommended)</label>
+            <div id="offer-drop-zone" style="border:2px dashed #2d3f35;border-radius:14px;padding:32px 16px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:#060a07" onclick="document.getElementById('offer-file').click()">
+              <div id="offer-preview-wrap" style="display:none">
+                <img id="offer-img-preview" src="" alt="Offer preview" style="max-width:100%;max-height:320px;border-radius:10px;object-fit:contain;margin:0 auto;display:block">
+                <p style="color:#64748b;font-size:11px;margin-top:8px" id="offer-file-info"></p>
+              </div>
+              <div id="offer-drop-hint">
+                <svg width="40" height="40" fill="none" stroke="#2d3f35" viewBox="0 0 24 24" style="margin:0 auto 10px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <p style="color:#64748b;font-size:13px;font-weight:600">Click to upload or drag & drop</p>
+                <p style="color:#3f4f46;font-size:11px;margin-top:4px">PNG, JPG, WEBP � Best size: 1080 � 1080 px � Max 2MB</p>
+              </div>
+            </div>
+            <input type="file" id="offer-file" accept="image/*" style="display:none">
+            <button onclick="document.getElementById('offer-img-preview').src='';document.getElementById('offer-preview-wrap').style.display='none';document.getElementById('offer-drop-hint').style.display='block';offerImageBase64=''" style="margin-top:8px;background:transparent;border:none;color:#ef4444;font-size:12px;cursor:pointer;padding:0" id="offer-remove-btn">? Remove image</button>
+          </div>
+
+          <!-- Link URL -->
+          <div style="margin-bottom:24px">
+            <label style="display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6px">Click-through Link (optional)</label>
+            <input type="url" id="offer-link" placeholder="https://wa.me/919685892813" style="width:100%;background:#0f1710;border:1px solid #27272a;border-radius:10px;padding:11px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit;box-sizing:border-box" onfocus="this.style.borderColor='#00df59'" onblur="this.style.borderColor='#27272a'">
+            <p style="color:#64748b;font-size:11px;margin-top:4px">Visitors who click the image will be taken to this URL</p>
+          </div>
+
+          <!-- Save -->
+          <button onclick="saveOfferPopup()" style="width:100%;padding:14px;border-radius:12px;background:#00df59;color:#000;font-weight:800;font-size:14px;border:none;cursor:pointer;font-family:inherit;transition:background .2s" onmouseover="this.style.background='#00ff66'" onmouseout="this.style.background='#00df59'">
+            ?? Save Offer Popup Settings
+          </button>
+
+          <!-- Current status -->
+          <div id="offer-status-bar" style="margin-top:16px;padding:12px 14px;border-radius:10px;background:#060a07;border:1px solid #1e2920;font-size:12px;color:#64748b;display:none">
+            Last saved: <span id="offer-last-saved" style="color:#00df59"></span>
+          </div>
+
+        </div>
+      </div>
     </main>
   </div>
 </div>
@@ -620,8 +685,8 @@ function boot() {
 }
 
 // ─── Panels ───────────────────────────────────────────────────────────────
-const PANELS = { dash:'p-dash', new:'p-new', posts:'p-posts', leads:'p-leads' };
-const NAVS   = { dash:'nb-dash', new:'nb-new', posts:'nb-posts', leads:'nb-leads' };
+const PANELS = { dash:'p-dash', new:'p-new', posts:'p-posts', leads:'p-leads', offer:'p-offer' };
+const NAVS   = { dash:'nb-dash', new:'nb-new', posts:'nb-posts', leads:'nb-leads', offer:'nb-offer' };
 
 function show(name) {
   Object.values(PANELS).forEach(id => {
@@ -634,6 +699,7 @@ function show(name) {
   });
   if (name === 'dash' || name === 'posts') loadPosts();
   if (name === 'leads') loadLeads();
+  if (name === 'offer') loadOfferPopup();
 }
 
 // ─── Toast ────────────────────────────────────────────────────────────────
@@ -1020,6 +1086,114 @@ if (sessionStorage.getItem('bw_admin')) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').classList.add('show');
   boot();
+}
+
+// --- Offer Popup ----------------------------------------------------------
+let offerImageBase64 = '';
+
+// Toggle visual state
+document.getElementById('offer-enabled').addEventListener('change', function () {
+  const on = this.checked;
+  document.getElementById('offer-toggle-track').style.background = on ? '#00df59' : '#27272a';
+  document.getElementById('offer-toggle-thumb').style.transform  = on ? 'translateX(22px)' : 'translateX(0)';
+});
+
+// Drag & drop styling
+const dropZone = document.getElementById('offer-drop-zone');
+if (dropZone) {
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.style.borderColor = '#00df59'; });
+  dropZone.addEventListener('dragleave', ()  => { dropZone.style.borderColor = '#2d3f35'; });
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = '#2d3f35';
+    const file = e.dataTransfer.files[0];
+    if (file) handleOfferFile(file);
+  });
+}
+
+// File input change
+document.getElementById('offer-file').addEventListener('change', function () {
+  if (this.files[0]) handleOfferFile(this.files[0]);
+});
+
+function handleOfferFile(file) {
+  if (!file.type.startsWith('image/')) { toast('Please select an image file', true); return; }
+  if (file.size > 2 * 1024 * 1024) { toast('Image must be under 2MB', true); return; }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    offerImageBase64 = e.target.result;
+    document.getElementById('offer-img-preview').src = offerImageBase64;
+    document.getElementById('offer-preview-wrap').style.display = 'block';
+    document.getElementById('offer-drop-hint').style.display    = 'none';
+    const kb = Math.round(file.size / 1024);
+    document.getElementById('offer-file-info').textContent = file.name + ' (' + kb + ' KB)';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function loadOfferPopup() {
+  try {
+    const r   = await fetch('/api/offer-popup');
+    const cfg = await r.json();
+
+    // Set toggle
+    const cb = document.getElementById('offer-enabled');
+    cb.checked = !!cfg.enabled;
+    document.getElementById('offer-toggle-track').style.background = cfg.enabled ? '#00df59' : '#27272a';
+    document.getElementById('offer-toggle-thumb').style.transform  = cfg.enabled ? 'translateX(22px)' : 'translateX(0)';
+
+    // Set image preview
+    if (cfg.imageBase64) {
+      offerImageBase64 = cfg.imageBase64;
+      document.getElementById('offer-img-preview').src = cfg.imageBase64;
+      document.getElementById('offer-preview-wrap').style.display = 'block';
+      document.getElementById('offer-drop-hint').style.display    = 'none';
+    }
+
+    // Set link
+    document.getElementById('offer-link').value = cfg.linkUrl || '';
+
+    // Set status bar
+    if (cfg.updatedAt) {
+      document.getElementById('offer-status-bar').style.display = 'block';
+      document.getElementById('offer-last-saved').textContent   = new Date(cfg.updatedAt).toLocaleString();
+    }
+  } catch(e) {
+    console.warn('Could not load offer popup config', e);
+  }
+}
+
+async function saveOfferPopup() {
+  const payload = {
+    enabled:     document.getElementById('offer-enabled').checked,
+    imageBase64: offerImageBase64,
+    linkUrl:     document.getElementById('offer-link').value.trim(),
+    altText:     'Special Offer'
+  };
+
+  if (payload.enabled && !payload.imageBase64) {
+    toast('Please upload an image before enabling the popup', true);
+    return;
+  }
+
+  try {
+    const r = await fetch('/api/offer-popup', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    });
+    const result = await r.json();
+    if (result.success) {
+      toast('Offer popup saved!');
+      document.getElementById('offer-status-bar').style.display = 'block';
+      document.getElementById('offer-last-saved').textContent   = new Date().toLocaleString();
+    } else {
+      toast('Save failed: ' + (result.error || 'unknown error'), true);
+    }
+  } catch(e) {
+    toast('Could not reach server', true);
+  }
 }
 </script>
 </body>
