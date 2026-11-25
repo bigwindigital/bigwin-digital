@@ -1118,16 +1118,42 @@ document.getElementById('offer-file').addEventListener('change', function () {
 
 function handleOfferFile(file) {
   if (!file.type.startsWith('image/')) { toast('Please select an image file', true); return; }
-  if (file.size > 2 * 1024 * 1024) { toast('Image must be under 2MB', true); return; }
+  if (file.size > 5 * 1024 * 1024) { toast('Image must be under 5MB', true); return; }
 
   const reader = new FileReader();
   reader.onload = function (e) {
-    offerImageBase64 = e.target.result;
-    document.getElementById('offer-img-preview').src = offerImageBase64;
-    document.getElementById('offer-preview-wrap').style.display = 'block';
-    document.getElementById('offer-drop-hint').style.display    = 'none';
-    const kb = Math.round(file.size / 1024);
-    document.getElementById('offer-file-info').textContent = file.name + ' (' + kb + ' KB)';
+    // -- Compress image using canvas --------------------------------------
+    const img = new Image();
+    img.onload = function () {
+      const MAX   = 480; // max dimension px — keeps file small
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        const ratio = Math.min(MAX / w, MAX / h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+      const canvas  = document.createElement('canvas');
+      canvas.width  = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+      // Try quality levels until under 70KB
+      let quality = 0.65;
+      let dataUrl = canvas.toDataURL('image/jpeg', quality);
+      while (dataUrl.length > 70000 && quality > 0.2) {
+        quality -= 0.1;
+        dataUrl  = canvas.toDataURL('image/jpeg', quality);
+      }
+
+      offerImageBase64 = dataUrl;
+      document.getElementById('offer-img-preview').src = dataUrl;
+      document.getElementById('offer-preview-wrap').style.display = 'block';
+      document.getElementById('offer-drop-hint').style.display    = 'none';
+      const kb = Math.round(dataUrl.length * 0.75 / 1024);
+      document.getElementById('offer-file-info').textContent =
+        file.name + ' ? compressed to ~' + kb + ' KB (q=' + Math.round(quality*100) + '%)';
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
@@ -1192,7 +1218,7 @@ async function saveOfferPopup() {
       toast('Save failed: ' + (result.error || 'unknown error'), true);
     }
   } catch(e) {
-    toast('Could not reach server', true);
+    toast('Network error: ' + e.message, true);
   }
 }
 </script>
