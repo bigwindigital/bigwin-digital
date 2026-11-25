@@ -1,5 +1,5 @@
-﻿/**
- * Bigwin Digital — Timed Popup Lead Form
+/**
+ * Bigwin Digital � Timed Popup Lead Form
  * - Appears after 10 seconds on every page
  * - Shows every time the page loads/refreshes
  * - Same 3-step form as the Free Store Audit button
@@ -10,7 +10,7 @@
 
   var DELAY_MS = 3000; // 3 seconds
 
-  // ── Inject CSS ───────────────────────────────────────────────────────────
+  // -- Inject CSS -----------------------------------------------------------
   var style = document.createElement('style');
   style.textContent = [
     '#bw-popup-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity .35s ease;}',
@@ -36,7 +36,7 @@
   ].join('');
   document.head.appendChild(style);
 
-  // ── Build HTML ───────────────────────────────────────────────────────────
+  // -- Build HTML -----------------------------------------------------------
   var el = document.createElement('div');
   el.id = 'bw-popup-overlay';
   el.innerHTML = [
@@ -58,7 +58,7 @@
     '  <!-- Step 1: Store & Revenue -->',
     '  <div class="bw-step bw-active" id="bw-s1">',
     '    <div style="text-align:center;margin-bottom:20px;">',
-    '      <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(0,223,89,.1);border:1px solid rgba(0,223,89,.25);color:#00ff66;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">🎁 Limited Offer</div>',
+    '      <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(0,223,89,.1);border:1px solid rgba(0,223,89,.25);color:#00ff66;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">?? Limited Offer</div>',
     '      <h3 style="color:#fff;font-size:22px;font-weight:800;margin:0 0 6px;">Get Your Free Store Audit</h3>',
     '      <p style="color:#94a3b8;font-size:13px;margin:0;">Takes 60 seconds. No credit card. No obligation.</p>',
     '    </div>',
@@ -69,14 +69,14 @@
     '    <label style="display:block;margin-bottom:20px;">',
     '      <span style="color:#94a3b8;font-size:12px;font-weight:600;">Monthly Revenue</span>',
     '      <select class="bw-input" id="bw-revenue">',
-    '        <option value="">— Select your range —</option>',
+    '        <option value="">� Select your range �</option>',
     '        <option>Under $10k/mo</option>',
-    '        <option>$10k – $50k/mo</option>',
-    '        <option>$50k – $200k/mo</option>',
+    '        <option>$10k � $50k/mo</option>',
+    '        <option>$50k � $200k/mo</option>',
     '        <option>$200k+/mo</option>',
     '      </select>',
     '    </label>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-next1">Next — Choose Services →</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-next1">Next � Choose Services ?</button>',
     '  </div>',
 
     '  <!-- Step 2: Services -->',
@@ -92,8 +92,8 @@
     '      <label class="bw-cb-label"><input type="checkbox" class="bw-svc" value="Full Growth Stack"> Full Growth Stack</label>',
     '    </div>',
     '    <p class="bw-err" id="bw-svc-err">Please select at least one service</p>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-next2" style="margin-top:20px;">Next — Your Details →</button>',
-    '    <button class="bw-btn bw-btn-outline" id="bw-back1" style="margin-top:8px;">← Back</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-next2" style="margin-top:20px;">Next � Your Details ?</button>',
+    '    <button class="bw-btn bw-btn-outline" id="bw-back1" style="margin-top:8px;">? Back</button>',
     '  </div>',
 
     '  <!-- Step 3: Contact -->',
@@ -115,8 +115,8 @@
     '      <input class="bw-input" id="bw-phone" type="tel" placeholder="+91 98765 43210">',
     '      <p class="bw-err" id="bw-phone-err">Phone number is required</p>',
     '    </label>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-submit">🚀 Generate My Free Audit</button>',
-    '    <button class="bw-btn bw-btn-outline" id="bw-back2" style="margin-top:8px;">← Back</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-submit">?? Generate My Free Audit</button>',
+    '    <button class="bw-btn bw-btn-outline" id="bw-back2" style="margin-top:8px;">? Back</button>',
     '  </div>',
 
     '  <!-- Success -->',
@@ -125,7 +125,7 @@
     '      <div style="width:64px;height:64px;border-radius:50%;background:#00df59;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">',
     '        <svg width="28" height="28" fill="none" stroke="#000" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>',
     '      </div>',
-    '      <h3 style="color:#fff;font-size:24px;font-weight:800;margin:0 0 8px;">Thank You! 🎉</h3>',
+    '      <h3 style="color:#fff;font-size:24px;font-weight:800;margin:0 0 8px;">Thank You! ??</h3>',
     '      <p style="color:#00ff66;font-weight:600;margin:0 0 8px;">Our team will connect with you shortly.</p>',
     '      <p style="color:#94a3b8;font-size:13px;margin:0;">A Senior Growth Strategist from Bigwin Digital will reach out within <strong style="color:#fff;">24 hours</strong> to discuss your free audit.</p>',
     '      <button class="bw-btn bw-btn-outline" id="bw-close-success" style="margin-top:24px;width:auto;padding:10px 28px;">Back to Site</button>',
@@ -135,7 +135,7 @@
     '</div>'
   ].join('');
 
-  // ── Helpers ──────────────────────────────────────────────────────────────
+  // -- Helpers --------------------------------------------------------------
   function show(id) {
     ['bw-s1','bw-s2','bw-s3','bw-s4'].forEach(function(s) {
       document.getElementById(s).classList.remove('bw-active');
@@ -186,7 +186,7 @@
 
     var btn = document.getElementById('bw-submit');
     btn.disabled = true;
-    btn.textContent = 'Submitting…';
+    btn.textContent = 'Submitting�';
 
     var lead = {
       name:     name,
@@ -213,22 +213,21 @@
     show('bw-s4');
   }
 
-  // ── Run after DOM is ready (handles dynamic script injection) ───────────
+  // -- Run after DOM is ready (handles dynamic script injection) -----------
   function onReady(fn) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn);
     } else {
-      fn(); // DOM already ready — run immediately
+      fn(); // DOM already ready � run immediately
     }
   }
 
-  // ── Attach to DOM & wire events after mount ──────────────────────────────
-  onReady(function () {
-    setTimeout(function () {
-      // Don't show on admin page
-      if (location.pathname.includes('admin')) return;
-      // Don't show if already submitted
-      document.body.appendChild(el);
+  // -- Attach to DOM & wire events after mount ------------------------------
+  // Show lead popup: waits for offer popup 'bw:offer-done' event
+  // Falls back after 20s in case offer popup script fails to fire
+  function showLeadForm() {
+    if (location.pathname.includes('admin')) return;
+    document.body.appendChild(el);
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { el.classList.add('bw-visible'); });
       });
@@ -250,6 +249,13 @@
       document.getElementById('bw-back2').onclick = function () { dot(2); show('bw-s2'); };
       document.getElementById('bw-submit').onclick = submitLead;
 
-    }, DELAY_MS);
+  }
+
+  onReady(function () {
+    // Listen for offer popup done signal (with 20s safety timeout)
+    var fired = false;
+    function trigger() { if (!fired) { fired = true; showLeadForm(); } }
+    window.addEventListener('bw:offer-done', trigger, { once: true });
+    setTimeout(trigger, 20000); // safety fallback
   });
 })();
