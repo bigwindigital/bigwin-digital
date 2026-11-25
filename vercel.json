@@ -1,7 +1,8 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/posts/:id", "destination": "/api/post-by-id?id=:id" },
-    { "source": "/blogs/:slug",   "destination": "/api/blog-post?slug=:slug" }
+    { "source": "/api/posts/:id",     "destination": "/api/post-by-id?id=:id" },
+    { "source": "/blogs/:slug",       "destination": "/api/blog-post?slug=:slug" },
+    { "source": "/api/offer-popup",   "destination": "/api/offer-popup" }
   ]
 }
