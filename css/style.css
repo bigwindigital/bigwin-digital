@@ -211,8 +211,8 @@ input[type="range"]::-moz-range-thumb {
 }
 .marquee-track {
   display: flex;
-  width: 200%;
-  animation: marqueeScroll 25s linear infinite;
+  width: max-content;
+  animation: marqueeScroll 40s linear infinite;
 }
 .marquee-track:hover {
   animation-play-state: paused;
