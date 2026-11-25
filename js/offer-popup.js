@@ -103,7 +103,7 @@
   }
 
   function tryShowOffer() {
-    fetch('/api/offer-popup')
+    fetch('/api/offer-popup?t=' + Date.now())
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
         if (!cfg.enabled || !cfg.imageBase64) {

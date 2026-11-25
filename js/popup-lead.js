@@ -1,5 +1,5 @@
-/**
- * Bigwin Digital — Timed Popup Lead Form
+ï»¿/**
+ * Bigwin Digital ï¿½ Timed Popup Lead Form
  * - Appears after 10 seconds on every page
  * - Shows every time the page loads/refreshes
  * - Same 3-step form as the Free Store Audit button
@@ -58,7 +58,7 @@
     '  <!-- Step 1: Store & Revenue -->',
     '  <div class="bw-step bw-active" id="bw-s1">',
     '    <div style="text-align:center;margin-bottom:20px;">',
-    '      <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(0,223,89,.1);border:1px solid rgba(0,223,89,.25);color:#00ff66;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">?? Limited Offer</div>',
+    '      <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(0,223,89,.1);border:1px solid rgba(0,223,89,.25);color:#00ff66;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">&#9733; Limited Offer</div>',
     '      <h3 style="color:#fff;font-size:22px;font-weight:800;margin:0 0 6px;">Get Your Free Store Audit</h3>',
     '      <p style="color:#94a3b8;font-size:13px;margin:0;">Takes 60 seconds. No credit card. No obligation.</p>',
     '    </div>',
@@ -69,14 +69,14 @@
     '    <label style="display:block;margin-bottom:20px;">',
     '      <span style="color:#94a3b8;font-size:12px;font-weight:600;">Monthly Revenue</span>',
     '      <select class="bw-input" id="bw-revenue">',
-    '        <option value="">— Select your range —</option>',
+    '        <option value="">ï¿½ Select your range ï¿½</option>',
     '        <option>Under $10k/mo</option>',
-    '        <option>$10k – $50k/mo</option>',
-    '        <option>$50k – $200k/mo</option>',
+    '        <option>$10k ï¿½ $50k/mo</option>',
+    '        <option>$50k ï¿½ $200k/mo</option>',
     '        <option>$200k+/mo</option>',
     '      </select>',
     '    </label>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-next1">Next — Choose Services ?</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-next1">Next &rarr; Choose Services</button>',
     '  </div>',
 
     '  <!-- Step 2: Services -->',
@@ -92,7 +92,7 @@
     '      <label class="bw-cb-label"><input type="checkbox" class="bw-svc" value="Full Growth Stack"> Full Growth Stack</label>',
     '    </div>',
     '    <p class="bw-err" id="bw-svc-err">Please select at least one service</p>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-next2" style="margin-top:20px;">Next — Your Details ?</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-next2" style="margin-top:20px;">Next &rarr; Your Details</button>',
     '    <button class="bw-btn bw-btn-outline" id="bw-back1" style="margin-top:8px;">? Back</button>',
     '  </div>',
 
@@ -115,7 +115,7 @@
     '      <input class="bw-input" id="bw-phone" type="tel" placeholder="+91 98765 43210">',
     '      <p class="bw-err" id="bw-phone-err">Phone number is required</p>',
     '    </label>',
-    '    <button class="bw-btn bw-btn-primary" id="bw-submit">?? Generate My Free Audit</button>',
+    '    <button class="bw-btn bw-btn-primary" id="bw-submit">Get My Free Audit</button>',
     '    <button class="bw-btn bw-btn-outline" id="bw-back2" style="margin-top:8px;">? Back</button>',
     '  </div>',
 
@@ -186,7 +186,7 @@
 
     var btn = document.getElementById('bw-submit');
     btn.disabled = true;
-    btn.textContent = 'Submitting…';
+    btn.textContent = 'Submitting...';
 
     var lead = {
       name:     name,
@@ -218,7 +218,7 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn);
     } else {
-      fn(); // DOM already ready — run immediately
+      fn(); // DOM already ready ï¿½ run immediately
     }
   }
 
