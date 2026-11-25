@@ -49,9 +49,9 @@
     '  <!-- Step dots -->',
     '  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">',
     '    <span class="bw-dot active" id="bw-d1">1</span>',
-    '    <span style="width:28px;height:2px;background:#1a2420;border-radius:2px;"></span>',
+    '    <span id="bw-l1" style="width:36px;height:2px;background:#1a2420;border-radius:2px;transition:background .3s;"></span>',
     '    <span class="bw-dot" id="bw-d2">2</span>',
-    '    <span style="width:28px;height:2px;background:#1a2420;border-radius:2px;"></span>',
+    '    <span id="bw-l2" style="width:36px;height:2px;background:#1a2420;border-radius:2px;transition:background .3s;"></span>',
     '    <span class="bw-dot" id="bw-d3">3</span>',
     '  </div>',
 
@@ -147,6 +147,11 @@
       var d = document.getElementById('bw-d' + i);
       if (d) d.classList.toggle('active', i <= n);
     });
+    // Colour connector lines green when step passes through them
+    var l1 = document.getElementById('bw-l1');
+    var l2 = document.getElementById('bw-l2');
+    if (l1) l1.style.background = n >= 2 ? '#00df59' : '#1a2420';
+    if (l2) l2.style.background = n >= 3 ? '#00df59' : '#1a2420';
   }
   function showErr(id, show) {
     var el = document.getElementById(id);
