@@ -13,6 +13,11 @@
   popupScript.src = 'js/popup-lead.js';
   document.head.appendChild(popupScript);
 
+  // ── WhatsApp Expert CTA Popup (toast, 8s delay) ───────────────────────
+  var waCtaScript = document.createElement('script');
+  waCtaScript.src = 'js/whatsapp-cta-popup.js';
+  document.head.appendChild(waCtaScript);
+
   // ── WhatsApp Floating Button ───────────────────────────────────────────
   var WHATSAPP_NUMBER = '919685892813'; // No + prefix
   var WHATSAPP_MSG    = encodeURIComponent('Hi Bigwin Digital! I\'d like to know more about your services.');
