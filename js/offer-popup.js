@@ -1,25 +1,21 @@
 /**
- * Bigwin Digital — Offer Popup (FIRST popup)
+ * Bigwin Digital � Offer Popup (FIRST popup)
  * - Appears 3 seconds after page load
- * - Shows admin-uploaded 1080×1080 offer image
+ * - Shows admin-uploaded 1080�1080 offer image
  * - When closed (or if disabled/no image), fires CustomEvent 'bw:offer-done'
  *   so the lead form knows it can show next
  */
 (function () {
   var DELAY_MS = 3000;
 
-  if (location.pathname.includes('admin')) {
-    // Still fire the event so lead popup isn't blocked on admin page
-    window.dispatchEvent(new CustomEvent('bw:offer-done'));
-    return;
-  }
+  if (location.pathname.includes('admin')) return;
 
-  // ── Helper: signal that offer is done so lead popup can proceed ──────────
+  // -- Helper: signal that offer is done so lead popup can proceed ----------
   function offerDone() {
     window.dispatchEvent(new CustomEvent('bw:offer-done'));
   }
 
-  // ── Inject CSS ───────────────────────────────────────────────────────────
+  // -- Inject CSS -----------------------------------------------------------
   var style = document.createElement('style');
   style.textContent = [
     '#bw-offer-overlay{',
@@ -53,7 +49,7 @@
   ].join('\n');
   document.head.appendChild(style);
 
-  // ── Build overlay ────────────────────────────────────────────────────────
+  // -- Build overlay --------------------------------------------------------
   var overlay = document.createElement('div');
   overlay.id = 'bw-offer-overlay';
 
@@ -61,17 +57,17 @@
     overlay.classList.remove('bw-of-in');
     setTimeout(function () {
       if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-      offerDone(); // ← trigger lead popup AFTER offer closes
+      offerDone(); // ? trigger lead popup AFTER offer closes
     }, 450);
   }
 
-  // ── Fetch config & show ──────────────────────────────────────────────────
+  // -- Fetch config & show --------------------------------------------------
   function tryShowOffer() {
     fetch('/api/offer-popup')
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
         if (!cfg.enabled || !cfg.imageBase64) {
-          offerDone(); // not shown → let lead popup fire immediately
+          setTimeout(offerDone, 2000); // disabled: 2s pause then trigger lead popup
           return;
         }
 
@@ -114,11 +110,11 @@
         });
       })
       .catch(function () {
-        offerDone(); // on error → don't block lead popup
+        offerDone(); // on error ? don't block lead popup
       });
   }
 
-  // ── Init ─────────────────────────────────────────────────────────────────
+  // -- Init -----------------------------------------------------------------
   function onReady(fn) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', fn);
