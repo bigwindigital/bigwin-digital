@@ -469,7 +469,10 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
               </button>
               <div id="n-faq-wrap" style="padding:14px 18px;padding-top:0;">
                 <div id="n-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
-                <button type="button" onclick="addFaq('n')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+                <div style="display:flex;gap:8px;margin-top:10px;">
+              <button type="button" onclick="addFaq('n')" style="flex:1;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+              <button type="button" onclick="extractFaqsFromEditor('n')" title="Scan article content for question headings and auto-fill FAQs" style="flex:1;padding:10px;border-radius:9px;border:1px solid #00df5930;background:#00df5910;color:#00ff66;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#00df5920'" onmouseout="this.style.background='#00df5910'">&#9889; Extract from content</button>
+            </div>
               </div>
             </div>
 
@@ -501,8 +504,8 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
                 </div>
                 <div style="font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;font-weight:700;">Custom JSON-LD</div>
                 <textarea class="field" id="n-custom-schema" rows="4" placeholder="{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BlogPosting&quot;,...}" style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-                <button type="button" onclick="previewSchema('n')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Preview Generated Schema</button>
-                <pre id="n-schema-preview" style="display:none;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;"></pre>
+                <button type="button" onclick="previewSchema('n')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Refresh Preview</button>
+                <pre id="n-schema-preview" style="display:block;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;">// Schema will auto-generate as you fill in the post title, author and slug above...</pre>
               </div>
             </div>
           </div>
@@ -676,7 +679,10 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
            </button>
            <div id="e-faq-wrap" style="padding:14px 18px;padding-top:0;">
              <div id="e-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
-             <button type="button" onclick="addFaq('e')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+             <div style="display:flex;gap:8px;margin-top:10px;">
+           <button type="button" onclick="addFaq('e')" style="flex:1;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+           <button type="button" onclick="extractFaqsFromEditor('e')" title="Scan article content for question headings and auto-fill FAQs" style="flex:1;padding:10px;border-radius:9px;border:1px solid #00df5930;background:#00df5910;color:#00ff66;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#00df5920'" onmouseout="this.style.background='#00df5910'">&#9889; Extract from content</button>
+         </div>
            </div>
          </div>
 
@@ -708,8 +714,8 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
              </div>
              <div style="font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;font-weight:700;">Custom JSON-LD</div>
              <textarea class="field" id="e-custom-schema" rows="4" placeholder="{&quot;@context&quot;:&quot;https://schema.org&quot;,...}" style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-             <button type="button" onclick="previewSchema('e')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Preview Generated Schema</button>
-             <pre id="e-schema-preview" style="display:none;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;"></pre>
+             <button type="button" onclick="previewSchema('e')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Refresh Preview</button>
+             <pre id="e-schema-preview" style="display:block;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;">// Schema will auto-generate from the post fields...</pre>
            </div>
          </div>
        </div>
@@ -1205,6 +1211,7 @@ function openEdit(id) {
   document.getElementById('e-content').value = p.content || '';
   loadSchemaFields('e', p.schema);
   document.getElementById('edit-modal').classList.add('open');
+  setTimeout(function() { initSchemaWatchers('e'); autoGenerateSchema('e'); }, 100);
 }
 
 function closeEdit() { document.getElementById('edit-modal').classList.remove('open'); }
@@ -1267,7 +1274,119 @@ function autoEditSlug(force) {
 document.addEventListener('DOMContentLoaded', () => {
   const fSlug = document.getElementById('f-slug');
   if (fSlug) fSlug.addEventListener('input', () => { fSlug.dataset.edited = '1'; });
+  // Init auto-schema watchers for new post form
+  initSchemaWatchers('n');
 });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTO-SCHEMA GENERATION — watches form fields and auto-builds JSON-LD
+// ═══════════════════════════════════════════════════════════════════════════
+
+var schemaAutoTimer = { n: null, e: null };
+
+function autoGenerateSchema(prefix) {
+  // Debounce 600ms
+  clearTimeout(schemaAutoTimer[prefix]);
+  schemaAutoTimer[prefix] = setTimeout(function() {
+    var titleId  = prefix === 'n' ? 'f-title'  : 'e-title';
+    var slugId   = prefix === 'n' ? 'f-slug'   : 'e-slug';
+    var authorId = prefix === 'n' ? 'f-author' : 'e-author';
+    var title    = ((document.getElementById(titleId)  || {}).value || '').trim();
+    var slug     = ((document.getElementById(slugId)   || {}).value || '').trim();
+    var author   = ((document.getElementById(authorId) || {}).value || '').trim();
+
+    if (!title) return; // Don't generate without a title
+
+    // Auto-add default breadcrumbs if none exist yet
+    if (schemaState[prefix].breadcrumbs.length === 0) {
+      schemaState[prefix].breadcrumbs = [
+        { name: 'Home', url: 'https://bigwin-digital.vercel.app' },
+        { name: 'Blog', url: 'https://bigwin-digital.vercel.app/blog.html' },
+        { name: title,  url: 'https://bigwin-digital.vercel.app/blogs/' + slug }
+      ];
+      renderBreadcrumbs(prefix);
+    } else {
+      // Update the last breadcrumb (post title) dynamically
+      var bc = schemaState[prefix].breadcrumbs;
+      if (bc.length >= 3) {
+        bc[bc.length - 1].name = title;
+        bc[bc.length - 1].url  = 'https://bigwin-digital.vercel.app/blogs/' + slug;
+        renderBreadcrumbs(prefix);
+      }
+    }
+
+    // Also try auto-extracting FAQs from content editor
+    if (prefix === 'n') {
+      var editor = document.getElementById('editor');
+      if (editor) autoExtractFaqs('n', editor.innerHTML);
+    }
+
+    // Build and show the schema preview
+    var data     = buildSchemaData(prefix);
+    var compiled = compileJsonLd(data, { title: title, slug: slug, author: author });
+    var pre      = document.getElementById(prefix + '-schema-preview');
+    if (pre && compiled.length) {
+      pre.textContent = JSON.stringify(compiled, null, 2);
+      pre.style.display = 'block';
+    }
+  }, 600);
+}
+
+// ── Auto-extract FAQs from editor HTML ──────────────────────────────────────
+// Finds <h3>...</h3> followed by <p>...</p> and treats them as Q&A pairs
+function autoExtractFaqs(prefix, html) {
+  if (schemaState[prefix].faqs.length) return; // Don't overwrite manually added FAQs
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  var extracted = [];
+  var headings = tmp.querySelectorAll('h2, h3, h4');
+  headings.forEach(function(h) {
+    var q = h.textContent.trim();
+    if (!q || q.length < 5) return;
+    // Only treat as FAQ if heading text ends with ? or looks like a question
+    if (!q.endsWith('?') && !/^(what|how|why|when|where|which|who|can|does|is|are|will|should)/i.test(q)) return;
+    var next = h.nextElementSibling;
+    var a = '';
+    while (next && !['H2','H3','H4'].includes(next.tagName)) {
+      a += next.textContent.trim() + ' ';
+      next = next.nextElementSibling;
+    }
+    a = a.trim();
+    if (a) extracted.push({ q: q, a: a });
+  });
+  if (extracted.length) {
+    schemaState[prefix].faqs = extracted;
+    renderFaqs(prefix);
+  }
+}
+
+// ── Init watchers for new post form ────────────────────────────────────────
+function initSchemaWatchers(prefix) {
+  var titleId  = prefix === 'n' ? 'f-title'  : 'e-title';
+  var authorId = prefix === 'n' ? 'f-author' : 'e-author';
+  var slugId   = prefix === 'n' ? 'f-slug'   : 'e-slug';
+
+  [titleId, authorId, slugId].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() { autoGenerateSchema(prefix); });
+  });
+
+  // Watch the rich text editor (new post only via MutationObserver)
+  if (prefix === 'n') {
+    var editor = document.getElementById('editor');
+    if (editor) {
+      var obs = new MutationObserver(function() { autoGenerateSchema('n'); });
+      obs.observe(editor, { childList: true, subtree: true, characterData: true });
+    }
+  }
+
+  // Watch schema checkboxes
+  ['article','breadcrumb','faq','organization','speakable','video','image'].forEach(function(t) {
+    var el = document.getElementById(prefix + '-st-' + t);
+    if (el) el.addEventListener('change', function() { autoGenerateSchema(prefix); });
+  });
+}
+
 
 // ─── Rich text editor ─────────────────────────────────────────────────────
 // ── Rich Text Editor helpers ──────────────────────────────────────────────
