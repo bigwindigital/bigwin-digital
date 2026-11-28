@@ -455,14 +455,56 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
           </div>
 
           
-          <div class="form-group">
-            <label style="display:flex;align-items:center;gap:8px;">
-              JSON-LD Schema Markup
-              <span style="font-size:11px;color:#475569;font-weight:400;">Optional — paste your BlogPosting / Article / FAQPage schema here</span>
-              <button type="button" onclick="insertBlogSchema()" style="margin-left:auto;background:#00df5918;border:1px solid #00df5930;color:#00ff66;border-radius:7px;padding:5px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">&#9889; Auto-Generate</button>
-            </label>
-            <textarea class="field" id="f-schema" rows="6" placeholder='{"@context":"https://schema.org","@type":"BlogPosting","headline":"Your Title","author":{"@type":"Person","name":"Author Name"},"publisher":{"@type":"Organization","name":"Bigwin Digital","url":"https://bigwin-digital.vercel.app"},"datePublished":"2024-01-01"}' style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-            <div style="font-size:11px;color:#475569;margin-top:4px;">&#128274; This will be injected as <code style="color:#00ff66;">&lt;script type="application/ld+json"&gt;</code> inside the blog post page &lt;head&gt; for Google rich results.</div>
+
+          <!-- SEO & Structured Data ─────────────────────────────────── -->
+          <div style="border:1px solid #1e2920;border-radius:16px;overflow:hidden;margin-top:4px;">
+            <div style="padding:14px 18px;background:#0a1409;border-bottom:1px solid #1e2920;">
+              <span style="font-size:12px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;">&#128269; SEO &amp; Structured Data</span>
+            </div>
+
+            <!-- FAQs -->
+            <div style="border-bottom:1px solid #1e2920;">
+              <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+                FAQs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <div id="n-faq-wrap" style="padding:14px 18px;padding-top:0;">
+                <div id="n-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+                <button type="button" onclick="addFaq('n')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+              </div>
+            </div>
+
+            <!-- Breadcrumbs -->
+            <div style="border-bottom:1px solid #1e2920;">
+              <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+                Breadcrumbs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <div id="n-bc-wrap" style="padding:14px 18px;padding-top:0;">
+                <div id="n-bc-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+                <button type="button" onclick="addBreadcrumb('n')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add breadcrumb</button>
+              </div>
+            </div>
+
+            <!-- Structured Data -->
+            <div>
+              <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+                Structured data (schema) <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+              <div id="n-schema-wrap" style="padding:14px 18px;padding-top:0;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-bottom:14px;">
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-article" checked style="accent-color:#00df59;width:16px;height:16px;"> Article</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-breadcrumb" checked style="accent-color:#00df59;width:16px;height:16px;"> Breadcrumb</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-faq" checked style="accent-color:#00df59;width:16px;height:16px;"> FAQ</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-organization" checked style="accent-color:#00df59;width:16px;height:16px;"> Organization</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-speakable" style="accent-color:#00df59;width:16px;height:16px;"> Speakable</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-video" style="accent-color:#00df59;width:16px;height:16px;"> Video</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="n-st-image" checked style="accent-color:#00df59;width:16px;height:16px;"> Image</label>
+                </div>
+                <div style="font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;font-weight:700;">Custom JSON-LD</div>
+                <textarea class="field" id="n-custom-schema" rows="4" placeholder="{&quot;@context&quot;:&quot;https://schema.org&quot;,&quot;@type&quot;:&quot;BlogPosting&quot;,...}" style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
+                <button type="button" onclick="previewSchema('n')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Preview Generated Schema</button>
+                <pre id="n-schema-preview" style="display:none;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;"></pre>
+              </div>
+            </div>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn btn-green" id="submit-btn">✓ Publish Post</button>
@@ -618,26 +660,59 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
       </div>
       <div class="form-group">
         <label>Content (HTML)</label>
-        <textarea class="field" id="e-content" rows="8" style="font-family:monospace;font-size:12px"></textarea>
-            <div class="form-group" style="margin-top:14px;">
-              <label style="display:flex;align-items:center;gap:8px;">
-                JSON-LD Schema Markup
-                <span style="font-size:11px;color:#475569;font-weight:400;">Optional</span>
-              </label>
-              <textarea class="field" id="e-schema" rows="6" placeholder='{"@context":"https://schema.org","@type":"BlogPosting",...}' style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-              <div style="font-size:11px;color:#475569;margin-top:4px;">Injected as <code style="color:#00ff66;">&lt;script type="application/ld+json"&gt;</code> in the post &lt;head&gt;.</div>
-            </div>
-      </div>
-      
-          <div class="form-group">
-            <label style="display:flex;align-items:center;gap:8px;">
-              JSON-LD Schema Markup
-              <span style="font-size:11px;color:#475569;font-weight:400;">Optional — paste your BlogPosting / Article / FAQPage schema here</span>
-              <button type="button" onclick="insertBlogSchema()" style="margin-left:auto;background:#00df5918;border:1px solid #00df5930;color:#00ff66;border-radius:7px;padding:5px 11px;font-size:11px;cursor:pointer;white-space:nowrap;">&#9889; Auto-Generate</button>
-            </label>
-            <textarea class="field" id="f-schema" rows="6" placeholder='{"@context":"https://schema.org","@type":"BlogPosting","headline":"Your Title","author":{"@type":"Person","name":"Author Name"},"publisher":{"@type":"Organization","name":"Bigwin Digital","url":"https://bigwin-digital.vercel.app"},"datePublished":"2024-01-01"}' style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
-            <div style="font-size:11px;color:#475569;margin-top:4px;">&#128274; This will be injected as <code style="color:#00ff66;">&lt;script type="application/ld+json"&gt;</code> inside the blog post page &lt;head&gt; for Google rich results.</div>
-          </div>
+         <textarea class="field" id="e-content" rows="8" style="font-family:monospace;font-size:12px"></textarea>
+       </div>
+
+       <!-- SEO & Structured Data ─────────────────────────────────── -->
+       <div style="border:1px solid #1e2920;border-radius:16px;overflow:hidden;margin-top:4px;">
+         <div style="padding:14px 18px;background:#0a1409;border-bottom:1px solid #1e2920;">
+           <span style="font-size:12px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.07em;">&#128269; SEO &amp; Structured Data</span>
+         </div>
+
+         <!-- FAQs -->
+         <div style="border-bottom:1px solid #1e2920;">
+           <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+             FAQs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+           </button>
+           <div id="e-faq-wrap" style="padding:14px 18px;padding-top:0;">
+             <div id="e-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+             <button type="button" onclick="addFaq('e')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add FAQ</button>
+           </div>
+         </div>
+
+         <!-- Breadcrumbs -->
+         <div style="border-bottom:1px solid #1e2920;">
+           <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+             Breadcrumbs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+           </button>
+           <div id="e-bc-wrap" style="padding:14px 18px;padding-top:0;">
+             <div id="e-bc-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+             <button type="button" onclick="addBreadcrumb('e')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:1px dashed #1e2920;background:transparent;color:#475569;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='#00df59';this.style.color='#00ff66'" onmouseout="this.style.borderColor='#1e2920';this.style.color='#475569'">+ Add breadcrumb</button>
+           </div>
+         </div>
+
+         <!-- Structured Data -->
+         <div>
+           <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
+             Structured data (schema) <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+           </button>
+           <div id="e-schema-wrap" style="padding:14px 18px;padding-top:0;">
+             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-bottom:14px;">
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-article" checked style="accent-color:#00df59;width:16px;height:16px;"> Article</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-breadcrumb" checked style="accent-color:#00df59;width:16px;height:16px;"> Breadcrumb</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-faq" checked style="accent-color:#00df59;width:16px;height:16px;"> FAQ</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-organization" checked style="accent-color:#00df59;width:16px;height:16px;"> Organization</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-speakable" style="accent-color:#00df59;width:16px;height:16px;"> Speakable</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-video" style="accent-color:#00df59;width:16px;height:16px;"> Video</label>
+               <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#cbd5e1;cursor:pointer;"><input type="checkbox" id="e-st-image" checked style="accent-color:#00df59;width:16px;height:16px;"> Image</label>
+             </div>
+             <div style="font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;font-weight:700;">Custom JSON-LD</div>
+             <textarea class="field" id="e-custom-schema" rows="4" placeholder="{&quot;@context&quot;:&quot;https://schema.org&quot;,...}" style="font-family:monospace;font-size:12px;resize:vertical;"></textarea>
+             <button type="button" onclick="previewSchema('e')" style="margin-top:8px;width:100%;padding:9px;border-radius:9px;background:#00df5918;border:1px solid #00df5930;color:#00ff66;font-size:12px;cursor:pointer;">&#128065; Preview Generated Schema</button>
+             <pre id="e-schema-preview" style="display:none;margin-top:8px;background:#060c07;border:1px solid #1e2920;border-radius:8px;padding:12px;font-size:11px;color:#94a3b8;white-space:pre-wrap;max-height:200px;overflow-y:auto;word-break:break-all;"></pre>
+           </div>
+         </div>
+       </div>
           <div class="form-actions">
         <button type="submit" class="btn btn-green">Save Changes</button>
         <button type="button" class="btn btn-ghost" onclick="closeEdit()">Cancel</button>
@@ -928,7 +1003,7 @@ async function submitNew(e) {
     author:     document.getElementById('f-author').value.trim(),
     authorRole: document.getElementById('f-role').value.trim(),
     result:     document.getElementById('f-result').value.trim(),
-    schema:     buildSchemaData('n'),
+    schema: buildSchemaData('n'),
     content
   };
 
@@ -998,7 +1073,7 @@ async function saveEdit(e) {
     readTime:document.getElementById('e-time').value.trim().toUpperCase(),
     author:  document.getElementById('e-author').value.trim(),
     result:  document.getElementById('e-result').value.trim(),
-    schema:     buildSchemaData('n'),
+    schema: buildSchemaData('n'),
     content: document.getElementById('e-content').value
   };
   try {
