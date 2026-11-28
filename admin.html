@@ -465,7 +465,7 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
             <!-- FAQs -->
             <div style="border-bottom:1px solid #1e2920;">
               <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
-                FAQs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                FAQs <span id="n-faq-count" style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;background:#1a2420;border:1px solid #1e2920;border-radius:999px;font-size:11px;color:#94a3b8;padding:0 5px;margin-right:4px;">0</span><svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
               </button>
               <div id="n-faq-wrap" style="padding:14px 18px;padding-top:0;">
                 <div id="n-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
@@ -672,7 +672,7 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
          <!-- FAQs -->
          <div style="border-bottom:1px solid #1e2920;">
            <button type="button" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('svg').style.transform=this.nextElementSibling.style.display==='none'?'rotate(0deg)':'rotate(180deg)'" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:transparent;border:none;cursor:pointer;color:#fff;font-size:14px;font-weight:700;">
-             FAQs <svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+             FAQs <span id="n-faq-count" style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;background:#1a2420;border:1px solid #1e2920;border-radius:999px;font-size:11px;color:#94a3b8;padding:0 5px;margin-right:4px;">0</span><svg width="16" height="16" fill="none" stroke="#94a3b8" viewBox="0 0 24 24" style="transition:transform .2s;transform:rotate(180deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
            </button>
            <div id="e-faq-wrap" style="padding:14px 18px;padding-top:0;">
              <div id="e-faq-list" style="display:flex;flex-direction:column;gap:10px;"></div>
@@ -1020,6 +1020,155 @@ async function submitNew(e) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// SCHEMA BUILDER — FAQs, Breadcrumbs, Structured Data
+// ═══════════════════════════════════════════════════════════════════════════
+var schemaState = { n: { faqs: [], breadcrumbs: [] }, e: { faqs: [], breadcrumbs: [] } };
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── FAQs ───────────────────────────────────────────────────────────────────
+function addFaq(prefix) {
+  schemaState[prefix].faqs.push({ q: '', a: '' });
+  renderFaqs(prefix);
+}
+function removeFaq(prefix, idx) {
+  schemaState[prefix].faqs.splice(idx, 1);
+  renderFaqs(prefix);
+}
+function renderFaqs(prefix) {
+  var list = document.getElementById(prefix + '-faq-list');
+  if (!list) return;
+  var count = schemaState[prefix].faqs.length;
+
+  // Update count badge in section header
+  var badge = document.getElementById(prefix + '-faq-count');
+  if (badge) badge.textContent = count;
+
+  list.innerHTML = '';
+  schemaState[prefix].faqs.forEach(function(faq, i) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:#0d1a10;border:1px solid #1e2920;border-radius:12px;padding:14px 16px;margin-bottom:10px;';
+    card.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+        '<span style="font-size:12px;font-weight:700;color:#94a3b8;">Question ' + (i+1) + '</span>' +
+        '<button type="button" onclick="removeFaq(\'' + prefix + '\',' + i + ')" style="background:#1a0a0a;border:1px solid #3f1515;color:#ef4444;border-radius:7px;padding:4px 8px;font-size:12px;cursor:pointer;line-height:1;" title="Remove">&#128465;</button>' +
+      '</div>' +
+      '<input class="field" placeholder="Question" value="' + escHtml(faq.q) + '" oninput="schemaState[\'' + prefix + '\'].faqs[' + i + '].q=this.value" style="margin-bottom:8px;border-radius:9px;">' +
+      '<textarea class="field" placeholder="Answer" rows="3" oninput="schemaState[\'' + prefix + '\'].faqs[' + i + '].a=this.value" style="border-radius:9px;resize:vertical;">' + escHtml(faq.a) + '</textarea>';
+    list.appendChild(card);
+  });
+}
+
+// ── Breadcrumbs ─────────────────────────────────────────────────────────────
+function addBreadcrumb(prefix) {
+  schemaState[prefix].breadcrumbs.push({ name: '', url: '' });
+  renderBreadcrumbs(prefix);
+}
+function removeBreadcrumb(prefix, idx) {
+  schemaState[prefix].breadcrumbs.splice(idx, 1);
+  renderBreadcrumbs(prefix);
+}
+function renderBreadcrumbs(prefix) {
+  var list = document.getElementById(prefix + '-bc-list');
+  if (!list) return;
+  list.innerHTML = '';
+  schemaState[prefix].breadcrumbs.forEach(function(bc, i) {
+    var row = document.createElement('div');
+    row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;margin-bottom:8px;';
+    row.innerHTML =
+      '<input class="field" placeholder="Name (e.g. Home)" value="' + escHtml(bc.name) + '" oninput="schemaState[\'' + prefix + '\'].breadcrumbs[' + i + '].name=this.value" style="border-radius:9px;">' +
+      '<input class="field" placeholder="URL" value="' + escHtml(bc.url) + '" oninput="schemaState[\'' + prefix + '\'].breadcrumbs[' + i + '].url=this.value" style="border-radius:9px;">' +
+      '<button type="button" onclick="removeBreadcrumb(\'' + prefix + '\',' + i + ')" style="background:#1a0a0a;border:1px solid #3f1515;color:#ef4444;border-radius:7px;padding:5px 8px;font-size:12px;cursor:pointer;white-space:nowrap;">&#128465;</button>';
+    list.appendChild(row);
+  });
+}
+
+// ── Schema compile ──────────────────────────────────────────────────────────
+function buildSchemaData(prefix) {
+  var st = schemaState[prefix];
+  var types = {
+    article:      !!(document.getElementById(prefix + '-st-article') || {}).checked,
+    breadcrumb:   !!(document.getElementById(prefix + '-st-breadcrumb') || {}).checked,
+    faq:          !!(document.getElementById(prefix + '-st-faq') || {}).checked,
+    organization: !!(document.getElementById(prefix + '-st-organization') || {}).checked,
+    speakable:    !!(document.getElementById(prefix + '-st-speakable') || {}).checked,
+    video:        !!(document.getElementById(prefix + '-st-video') || {}).checked,
+    image:        !!(document.getElementById(prefix + '-st-image') || {}).checked
+  };
+  var custom = ((document.getElementById(prefix + '-custom-schema') || {}).value || '').trim();
+  return { faqs: st.faqs, breadcrumbs: st.breadcrumbs, types: types, custom: custom };
+}
+
+function previewSchema(prefix) {
+  var data  = buildSchemaData(prefix);
+  var title = ((document.getElementById(prefix === 'n' ? 'f-title' : 'e-title') || {}).value || '');
+  var slug  = ((document.getElementById(prefix === 'n' ? 'f-slug'  : 'e-slug')  || {}).value || '');
+  var auth  = ((document.getElementById(prefix === 'n' ? 'f-author': 'e-author')|| {}).value || '');
+  var compiled = compileJsonLd(data, { title: title, slug: slug, author: auth });
+  var pre = document.getElementById(prefix + '-schema-preview');
+  if (pre) { pre.textContent = JSON.stringify(compiled, null, 2); pre.style.display = 'block'; }
+}
+
+function compileJsonLd(schemaData, post) {
+  var blocks = [];
+  var base   = 'https://bigwin-digital.vercel.app';
+  var title  = (post && post.title)  || 'Blog Post';
+  var slug   = (post && post.slug)   || '';
+  var author = (post && post.author) || 'Bigwin Digital';
+  var date   = (post && post.publishedAt) || new Date().toISOString().split('T')[0];
+  var url    = base + '/blogs/' + slug;
+
+  if (schemaData.types && schemaData.types.article) {
+    var art = { '@context':'https://schema.org','@type':'BlogPosting', headline: title,
+      author:{ '@type':'Person', name: author },
+      publisher:{ '@type':'Organization', name:'Bigwin Digital', url: base },
+      datePublished: date, mainEntityOfPage:{ '@type':'WebPage','@id': url } };
+    if (schemaData.types.image) art.image = base + '/assets/bigwin-logo.jpg';
+    blocks.push(art);
+  }
+  if (schemaData.types && schemaData.types.faq && schemaData.faqs && schemaData.faqs.length) {
+    blocks.push({ '@context':'https://schema.org','@type':'FAQPage',
+      mainEntity: schemaData.faqs.map(function(f) {
+        return { '@type':'Question', name: f.q, acceptedAnswer:{ '@type':'Answer', text: f.a } };
+      })
+    });
+  }
+  if (schemaData.types && schemaData.types.breadcrumb && schemaData.breadcrumbs && schemaData.breadcrumbs.length) {
+    blocks.push({ '@context':'https://schema.org','@type':'BreadcrumbList',
+      itemListElement: schemaData.breadcrumbs.map(function(bc, i) {
+        return { '@type':'ListItem', position: i+1, name: bc.name, item: bc.url };
+      })
+    });
+  }
+  if (schemaData.types && schemaData.types.organization) {
+    blocks.push({ '@context':'https://schema.org','@type':'Organization',
+      name:'Bigwin Digital', url: base, logo: base + '/assets/bigwin-logo.jpg' });
+  }
+  if (schemaData.custom) { try { blocks.push(JSON.parse(schemaData.custom)); } catch(e) {} }
+  return blocks;
+}
+
+function loadSchemaFields(prefix, schemaData) {
+  if (!schemaData || typeof schemaData !== 'object') {
+    schemaState[prefix] = { faqs: [], breadcrumbs: [] };
+    renderFaqs(prefix); renderBreadcrumbs(prefix);
+    return;
+  }
+  schemaState[prefix].faqs        = schemaData.faqs        || [];
+  schemaState[prefix].breadcrumbs = schemaData.breadcrumbs || [];
+  renderFaqs(prefix); renderBreadcrumbs(prefix);
+  var types = schemaData.types || {};
+  ['article','breadcrumb','faq','organization','speakable','video','image'].forEach(function(t) {
+    var el = document.getElementById(prefix + '-st-' + t);
+    if (el) el.checked = types[t] !== undefined ? !!types[t] : (t !== 'speakable' && t !== 'video');
+  });
+  var customEl = document.getElementById(prefix + '-custom-schema');
+  if (customEl) customEl.value = schemaData.custom || '';
+}
+
 function clearNew() {
   document.getElementById('new-form').reset();
   document.getElementById('editor').innerHTML = '';
@@ -1073,7 +1222,7 @@ async function saveEdit(e) {
     readTime:document.getElementById('e-time').value.trim().toUpperCase(),
     author:  document.getElementById('e-author').value.trim(),
     result:  document.getElementById('e-result').value.trim(),
-    schema: buildSchemaData('n'),
+    schema:  buildSchemaData('e'),
     content: document.getElementById('e-content').value
   };
   try {
