@@ -1057,16 +1057,16 @@
       try {
         // First try server-injected data (fastest - no network request needed)
         if (window.__INJECTED_POSTS__ && Array.isArray(window.__INJECTED_POSTS__)) {
-          dynamicPosts = window.__INJECTED_POSTS__;
+          dynamicPosts = (window.__INJECTED_POSTS__ || []).filter(p => p.status !== 'draft');
           renderDynamicPosts();
           updateCountBadge();
           return; // Done - no fetch needed
         }
         // Fallback: fetch from API
-        const r = await fetch('/api/posts');
+        const r = await fetch('/api/posts?status=published');
         if (!r.ok) return;
         const data = await r.json();
-        dynamicPosts = Array.isArray(data) ? data : [];
+        dynamicPosts = (Array.isArray(data) ? data : []).filter(p => p.status !== 'draft');
         renderDynamicPosts();
         updateCountBadge();
       } catch(err) {
@@ -1083,7 +1083,7 @@
       grid.querySelectorAll('.dynamic-post-card').forEach(el => el.remove());
 
       // Sort oldest first so insertBefore(firstChild) puts newest at the top
-      const sorted = [...dynamicPosts].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      const sorted = [...dynamicPosts].filter(p => p.status !== 'draft').sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
       sorted.forEach(post => {
         const initials = (post.author || '?').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
@@ -1154,7 +1154,7 @@
     }
 
     function openDynamicPostModal(id) {
-      const post = dynamicPosts.find(p => p.id === id);
+      const post = dynamicPosts.find(p => p.id === id && p.status !== 'draft');
       if (!post) return;
 
       const modal = document.getElementById('article-modal');

@@ -1,4 +1,4 @@
-// Vercel Serverless Function — /blogs/:slug
+﻿// Vercel Serverless Function — /blogs/:slug
 // Renders individual blog post as a full HTML page
 
 const BIN_ID  = process.env.JSONBIN_BIN_ID;
@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
   const posts = await readPosts();
   const post  = posts.find(p => p.slug === slug);
 
-  if (!post) {
+  if (!post || post.status === 'draft') {
     res.setHeader('Content-Type', 'text/html');
     return res.status(404).send(`<!DOCTYPE html><html><head><title>404 Not Found</title>
       <style>body{background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px}</style>

@@ -1,4 +1,4 @@
-// Vercel Serverless Function — /api/posts
+﻿// Vercel Serverless Function — /api/posts
 // GET  → return all posts
 // POST → create new post
 
@@ -54,6 +54,10 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'GET') {
     const { posts } = await readAll();
+    const url = req.url || '';
+    if (url.includes('status=published') || (req.query && req.query.status === 'published')) {
+      return res.status(200).json(posts.filter(p => p.status !== 'draft'));
+    }
     return res.status(200).json(posts);
   }
 
@@ -64,6 +68,7 @@ module.exports = async function handler(req, res) {
       const newPost = {
         id:        Date.now().toString(),
         createdAt: new Date().toISOString(),
+        status:    body.status || 'published',
         ...body
       };
       posts.unshift(newPost);

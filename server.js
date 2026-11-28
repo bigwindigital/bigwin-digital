@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Bigwin Digital - Local Server
  * Serves static files + Blog Admin REST API
  *
@@ -122,16 +122,20 @@ const server = http.createServer(async (req, res) => {
 
   // GET /api/posts
   if (url === '/api/posts' && method === 'GET') {
-    return sendJSON(res, 200, readPosts());
+    let posts = readPosts();
+    if (req.url.includes('status=published')) {
+      posts = posts.filter(p => p.status !== 'draft');
+    }
+    return sendJSON(res, 200, posts);
   }
 
   // GET /blogs/:slug  — individual blog post page
   const slugMatch = url.match(/^\/blogs\/([^/]+)$/);
   if (slugMatch && method === 'GET') {
     const slug  = slugMatch[1];
-    const posts = readPosts();
+    const posts = readPosts().filter(p => p.status !== 'draft');
     const post  = posts.find(p => p.slug === slug);
-    if (!post) {
+    if (!post || post.status === 'draft') {
       res.writeHead(404, { 'Content-Type': 'text/html' });
       return res.end('<h1>404 — Blog post not found</h1><p><a href="/blog.html">Back to Blog</a></p>');
     }
@@ -278,6 +282,7 @@ const server = http.createServer(async (req, res) => {
       const newPost = {
         id:        Date.now().toString(),
         createdAt: new Date().toISOString(),
+        status:    body.status || 'published',
         ...body
       };
       posts.unshift(newPost);   // newest first
@@ -387,7 +392,7 @@ const server = http.createServer(async (req, res) => {
       // For blog.html: inject posts as a server-side variable so they
       // appear instantly without waiting for the fetch to complete
       if (reqPath === '/blog.html') {
-        const posts = readPosts();
+        const posts = readPosts().filter(p => p.status !== 'draft');
         const injection = `<script>window.__INJECTED_POSTS__ = ${JSON.stringify(posts)};</script>`;
         let html = content.toString('utf-8');
         html = html.replace('</head>', injection + '\n</head>');

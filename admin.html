@@ -509,8 +509,9 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
               </div>
             </div>
           </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-green" id="submit-btn">✓ Publish Post</button>
+                    <div class="form-actions" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <button type="submit" class="btn btn-green" id="submit-btn">&#10003; Publish Post</button>
+            <button type="button" class="btn" id="draft-btn" onclick="submitNew(event, 'draft')" style="background:#1e2920;border:1px solid #eab30870;color:#facc15;font-weight:700;padding:12px 20px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-size:14px;transition:all .2s;" onmouseover="this.style.background='#2d3d2a';this.style.borderColor='#facc15'" onmouseout="this.style.background='#1e2920';this.style.borderColor='#eab30870'">&#128190; Save as Draft</button>
             <button type="button" class="btn btn-ghost" onclick="clearNew()">Clear</button>
           </div>
         </form>
@@ -662,6 +663,13 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
         <div class="form-group"><label>Result Tag</label><input class="field" id="e-result"></div>
       </div>
       <div class="form-group">
+        <label>Publication Status</label>
+        <select class="field" id="e-status" style="border-color:#00df5950;">
+          <option value="published">&#128994; Published (Live on site)</option>
+          <option value="draft">&#128993; Draft (Hidden from public site)</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label>Content (HTML)</label>
          <textarea class="field" id="e-content" rows="8" style="font-family:monospace;font-size:12px"></textarea>
        </div>
@@ -719,8 +727,9 @@ label{display:block;font-size:12px;font-weight:600;color:#94a3b8;margin-bottom:6
            </div>
          </div>
        </div>
-          <div class="form-actions">
+          <div class="form-actions" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <button type="submit" class="btn btn-green">Save Changes</button>
+        <button type="button" class="btn" onclick="saveEditWithStatus('draft')" style="background:#1e2920;border:1px solid #eab30870;color:#facc15;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.background='#2d3d2a'" onmouseout="this.style.background='#1e2920'">&#128190; Save as Draft</button>
         <button type="button" class="btn btn-ghost" onclick="closeEdit()">Cancel</button>
       </div>
     </form>
@@ -878,9 +887,13 @@ function renderAll() {
 function rowHTML(p) {
   const date = new Date(p.createdAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   const ini  = (p.author||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  const isDraft = p.status === 'draft';
   return `<div class="post-row">
     <div style="flex:1">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">
+        ${isDraft 
+          ? '<span class="badge" style="background:#eab30820;color:#facc15;border:1px solid #eab30860;font-weight:800;font-size:10px;">&#128993; DRAFT</span>' 
+          : '<span class="badge" style="background:#00df5918;color:#00ff66;border:1px solid #00df5940;font-weight:800;font-size:10px;">&#128994; PUBLISHED</span>'}
         <span class="badge">${CATS[p.category]||p.category}</span>
         <span style="font-size:11px;color:#475569;font-family:monospace">${p.readTime||''} · ${date}</span>
       </div>
@@ -892,7 +905,7 @@ function rowHTML(p) {
         ${p.result?`<span style="font-size:11px;color:#00df59;font-family:monospace">${p.result}</span>`:''}
       </div>
     </div>
-    <div class="post-row-actions">
+    <div class="post-row-actions" style="display:flex;gap:6px;align-items:center;">
       <button class="btn-edit" onclick="openEdit('${p.id}')">Edit</button>
       <button class="btn-danger" onclick="delPost('${p.id}')">Delete</button>
     </div>
@@ -992,38 +1005,56 @@ function exportLeadsCSV() {
 }
 
 // ─── New Post ─────────────────────────────────────────────────────────────
-async function submitNew(e) {
-  e.preventDefault();
-  const content = document.getElementById('editor').innerHTML.trim();
-  if (!content) { toast('Please write some article content.', true); return; }
+async function submitNew(e, forcedStatus) {
+  if (e && e.preventDefault) e.preventDefault();
+  const status = forcedStatus || 'published';
 
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true; btn.textContent = 'Publishing…';
+  const title = (document.getElementById('f-title') ? document.getElementById('f-title').value : '').trim();
+  if (!title) {
+    toast(status === 'draft' ? 'Please enter a post title to save draft.' : 'Please enter a post title.', true);
+    return;
+  }
+
+  const content = (document.getElementById('editor') ? document.getElementById('editor').innerHTML : '').trim();
+  if (status === 'published' && (!content || content === '<br>')) {
+    toast('Please write some article content before publishing.', true);
+    return;
+  }
+
+  const btn = status === 'draft' ? document.getElementById('draft-btn') : document.getElementById('submit-btn');
+  const origText = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = status === 'draft' ? 'Saving Draft…' : 'Publishing…'; }
+
+  let slug = (document.getElementById('f-slug') ? document.getElementById('f-slug').value : '').trim();
+  if (!slug) slug = makeSlug(title);
 
   const data = {
-    title:      document.getElementById('f-title').value.trim(),
-    slug:       document.getElementById('f-slug').value.trim(),
-    excerpt:    document.getElementById('f-excerpt').value.trim(),
-    category:   document.getElementById('f-cat').value,
-    readTime:   document.getElementById('f-time').value.trim().toUpperCase(),
-    author:     document.getElementById('f-author').value.trim(),
-    authorRole: document.getElementById('f-role').value.trim(),
-    result:     document.getElementById('f-result').value.trim(),
-    schema: buildSchemaData('n'),
-    content
+    title:      title,
+    slug:       slug,
+    excerpt:    (document.getElementById('f-excerpt') ? document.getElementById('f-excerpt').value : '').trim() || (status === 'draft' ? title : ''),
+    category:   (document.getElementById('f-cat') ? document.getElementById('f-cat').value : '') || 'performance',
+    readTime:   ((document.getElementById('f-time') ? document.getElementById('f-time').value : '') || '5 MIN READ').trim().toUpperCase(),
+    author:     ((document.getElementById('f-author') ? document.getElementById('f-author').value : '') || 'Admin').trim(),
+    authorRole: (document.getElementById('f-role') ? document.getElementById('f-role').value : '').trim(),
+    result:     (document.getElementById('f-result') ? document.getElementById('f-result').value : '').trim(),
+    status:     status,
+    schema:     buildSchemaData('n'),
+    content:    content
   };
 
   try {
     const r = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
     if (!r.ok) throw new Error();
-    toast('Post published! 🎉');
+    toast(status === 'draft' ? 'Draft saved successfully! 💾' : 'Post published! 🎉');
     clearNew();
+    loadPosts();
     show('posts');
   } catch {
-    toast('Save failed — is "node server.js" running?', true);
+    toast('Save failed — check server connection.', true);
   } finally {
-    btn.disabled = false; btn.textContent = '✓ Publish Post';
+    if (btn) { btn.disabled = false; btn.textContent = origText; }
   }
+}
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1208,6 +1239,9 @@ function openEdit(id) {
   document.getElementById('e-time').value    = p.readTime || '';
   document.getElementById('e-author').value  = p.author;
   document.getElementById('e-result').value  = p.result || '';
+  if (document.getElementById('e-status')) {
+    document.getElementById('e-status').value = p.status === 'draft' ? 'draft' : 'published';
+  }
   document.getElementById('e-content').value = p.content || '';
   loadSchemaFields('e', p.schema);
   document.getElementById('edit-modal').classList.add('open');
@@ -1218,9 +1252,10 @@ function closeEdit() { document.getElementById('edit-modal').classList.remove('o
 
 document.getElementById('edit-modal').addEventListener('click', e => { if (e.target.id === 'edit-modal') closeEdit(); });
 
-async function saveEdit(e) {
-  e.preventDefault();
+async function saveEdit(e, forcedStatus) {
+  if (e && e.preventDefault) e.preventDefault();
   const id = document.getElementById('e-id').value;
+  const status = forcedStatus || (document.getElementById('e-status') ? document.getElementById('e-status').value : 'published');
   const data = {
     title:   document.getElementById('e-title').value.trim(),
     slug:    document.getElementById('e-slug').value.trim(),
@@ -1229,16 +1264,24 @@ async function saveEdit(e) {
     readTime:document.getElementById('e-time').value.trim().toUpperCase(),
     author:  document.getElementById('e-author').value.trim(),
     result:  document.getElementById('e-result').value.trim(),
+    status:  status,
     schema:  buildSchemaData('e'),
     content: document.getElementById('e-content').value
   };
   try {
     const r = await fetch(API + '/' + id, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
     if (!r.ok) throw new Error();
-    toast('Post updated!');
+    toast(status === 'draft' ? 'Draft updated! 💾' : 'Post updated! 🎉');
     closeEdit();
     loadPosts();
   } catch { toast('Update failed.', true); }
+}
+
+function saveEditWithStatus(status) {
+  if (document.getElementById('e-status')) {
+    document.getElementById('e-status').value = status;
+  }
+  saveEdit(null, status);
 }
 
 // ─── Slug helpers ─────────────────────────────────────────────────────────
